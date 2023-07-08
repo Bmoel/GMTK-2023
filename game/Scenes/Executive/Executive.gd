@@ -1,6 +1,7 @@
 extends Control
 
 var _characters = []
+var _currentCharID:int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,9 +22,10 @@ func initializeCharacters():
 	
 func playGame():
 	openSequence()
+	_currentCharID = 0
 	for id in range(0, len(_characters)):
 		slideCharacter("left", id)
-		playDialogue(id)
+		playDialogue("d1a")
 
 func openSequence():
 	pass
@@ -36,7 +38,18 @@ func slideCharacter(direction:String, characterID:int):
 		tween.tween_property(_characters[characterID], "rect_position", Vector2(1850,0), 0.75)
 
 
-func playDialogue(character):
+func playDialogue(dialogueKey):
+	var dialogueContainer = _characters[_currentCharID]._dialogueTree[dialogueKey]
+	var dialogueString = dialogueContainer[0]
+	var responseKeys = dialogueContainer[1]
+	var actionKeys = dialogueContainer[2]
+	$textBox.queue_text(dialogueString)
+	for key in responseKeys:
+		pass
+	for key in actionKeys:
+		playAction(key)
+	
+func playAction(actionKey):
 	pass
 	
 func getTrees(character:String):
