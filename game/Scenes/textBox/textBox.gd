@@ -15,6 +15,7 @@ onready var start_symbol = $BackContainer/MarginContainer/HBoxContainer/Start
 onready var end_symbol = $BackContainer/MarginContainer/HBoxContainer/End
 onready var text_box = $BackContainer/MarginContainer/HBoxContainer/Text
 onready var text_displayer = $Tween
+onready var _topBox = $TopBox/Label
 
 enum State {
 	READY,
@@ -100,7 +101,12 @@ func get_state() -> String:
 * @return None
 */
 """
-func queue_text(next_text):
+func queue_text(next_text, top_box_opt="", color_opt=""):
+	if top_box_opt != "":
+		$TopBox.show()
+		set_top_box_text(top_box_opt, color_opt)
+	else:
+		$TopBox.hide()
 	#pushes text onto queue
 	text_queue.push_back(next_text)
 
@@ -112,11 +118,10 @@ func queue_text(next_text):
 * @return None
 */
 """
-func queue_text_with_name(next_text, name_in, color_in=""):
-	var name_color = Global.getColorCode(color_in)
-	var name_mod = "[color=" + name_color + "]" + name_in +  "[/color]"
-	var final_str = name_mod + ": " + next_text
-	text_queue.push_back(final_str)
+func set_top_box_text(text_in, color_in):
+	var color_code = Global.getColorCode(color_in)
+	var mod_text = "[color=" + color_code + "]" + text_in +  "[/color]"
+	_topBox.bbcode_text = mod_text
 
 """
 /*
@@ -143,6 +148,7 @@ func hide_textbox():
 	end_symbol.text = ""
 	text_box.bbcode_text = ""
 	textbox_container.hide()
+	$TopBox.hide()
 
 """
 /*
@@ -157,6 +163,7 @@ func show_textbox():
 	#show both the scene and text container
 	show()
 	textbox_container.show()
+	$TopBox.show()
 
 """
 /*

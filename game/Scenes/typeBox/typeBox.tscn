@@ -32,7 +32,7 @@ border_width_right = 1
 border_width_bottom = 1
 
 [sub_resource type="DynamicFont" id=9]
-size = 50
+size = 45
 font_data = ExtResource( 2 )
 
 [node name="typeBox" type="CanvasLayer"]
@@ -49,12 +49,12 @@ margin_bottom = -20.0
 custom_constants/margin_right = 0
 
 [node name="Panel" type="Panel" parent="BackContainer"]
-margin_right = 1240.0
+margin_right = 1880.0
 margin_bottom = 200.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="BackContainer"]
-margin_right = 1240.0
+margin_right = 1880.0
 margin_bottom = 200.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
@@ -64,14 +64,14 @@ custom_constants/margin_bottom = 8
 [node name="Panel" type="Panel" parent="BackContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 1232.0
+margin_right = 1872.0
 margin_bottom = 192.0
 custom_styles/panel = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="BackContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 1232.0
+margin_right = 1872.0
 margin_bottom = 192.0
 custom_constants/separation = 0
 
@@ -84,7 +84,7 @@ text = " "
 
 [node name="TextInput" type="TextEdit" parent="BackContainer/MarginContainer/HBoxContainer"]
 margin_left = 14.0
-margin_right = 1193.0
+margin_right = 1833.0
 margin_bottom = 184.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 6 )
@@ -92,23 +92,24 @@ custom_styles/normal = SubResource( 7 )
 smooth_scrolling = true
 
 [node name="End" type="Label" parent="BackContainer/MarginContainer/HBoxContainer"]
-margin_left = 1193.0
+margin_left = 1833.0
 margin_top = 123.0
-margin_right = 1224.0
+margin_right = 1864.0
 margin_bottom = 184.0
 size_flags_vertical = 10
 custom_fonts/font = SubResource( 5 )
 text = "> "
 
-[node name="Instructions" type="Panel" parent="."]
+[node name="TopBox" type="Panel" parent="."]
 margin_left = 28.0
-margin_top = 464.0
+margin_top = 824.0
 margin_right = 328.0
-margin_bottom = 504.0
+margin_bottom = 864.0
 custom_styles/panel = SubResource( 8 )
 
-[node name="Label" type="Label" parent="Instructions"]
-margin_left = 6.0
-margin_right = 40.0
-margin_bottom = 14.0
-custom_fonts/font = SubResource( 9 )
+[node name="Label" type="RichTextLabel" parent="TopBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/normal_font = SubResource( 9 )
+bbcode_enabled = true
+scroll_active = false

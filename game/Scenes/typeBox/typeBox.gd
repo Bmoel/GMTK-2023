@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 onready var text_input = $BackContainer/MarginContainer/HBoxContainer/TextInput
-onready var instructions_label = $Instructions/Label
+onready var _topBox = $TopBox/Label
 
 #Called on object declartation
 func _ready() -> void:
@@ -15,10 +15,12 @@ func _input(event) -> void:
 		GlobalSignals.emit_signal("typebox_submit",text_input.text)
 		queue_free()
 
-#Function to set text of instruction header
-func set_instructions(instr:String) -> void:
-	instructions_label.text = instr
-
 #Function to extend or decrease size of instruction header
 func set_instructions_length(x_length:int):
 	$Instructions.rect_size.x = x_length
+
+#Function to set text of instruction header
+func set_topBox(text_in:String, color: String):
+	var color_code = Global.getColorCode(color)
+	var myText = " [color=" + color_code + "]" + text_in + "[/color]"
+	_topBox.bbcode_text = myText

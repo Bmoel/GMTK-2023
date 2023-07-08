@@ -38,6 +38,7 @@ func changeButtonTexts(texts:Array) -> void:
 	var inc = 0
 	for b_obj in _buttons:
 		if texts[inc] == "":
+			hide_button(inc+1)
 			continue
 		b_obj.text = texts[inc]
 		inc += 1
@@ -48,7 +49,17 @@ func changeButtonWidths(width: int):
 	rect_size.x = width
 	emit_signal("recenter_buttons", width)
 
-#Hide button you want
+#Function to show/hide ALL buttons
+# true = show all, false = hide all
+func buttonVisibility(value: bool):
+	visible = value
+	for i in range(1,5):
+		if value:
+			show_button(i)
+		else:
+			hide_button(i)
+
+#Hide button you want INDIVIDUALLY
 #NOTE: You enter 1-4, it will subtract 1 for you
 func hide_button(button_num: int) -> void:
 	button_num -= 1
@@ -57,7 +68,7 @@ func hide_button(button_num: int) -> void:
 		return
 	_buttons[button_num].hide()
 
-#Show button you want
+#Show button you want INDIVIDUALLY
 #NOTE: You enter 1-4, it will subtract 1 for you
 func show_button(button_num: int):
 	button_num -= 1

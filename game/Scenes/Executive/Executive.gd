@@ -1,5 +1,7 @@
 extends Control
 
+onready var _buttons = $ButtonLayer/DecisionButtons
+
 var _characters = []
 var _currentCharID:int
 var _pendingDialogueKey:String
@@ -11,7 +13,6 @@ func _ready():
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	initializeCharacters()
 	playGame()
-
 
 """
 /*
@@ -86,13 +87,13 @@ func slideCharacter(direction:String, characterID:int):
 * @param dialogueKey: dictionary identifier indicating which dialogue has been supplied
 * @return None
 */
-"""	
+"""
 func playDialogue(dialogueKey):
 	var dialogueContainer = _characters[_currentCharID]._dialogueTree[dialogueKey]
 	var dialogueString = dialogueContainer[0]
 	var responseKeys = dialogueContainer[1]
 	var actionKeys = dialogueContainer[2]
-	$textBox.queue_text_with_name(dialogueString, _characters[_currentCharID]._charName, _characters[_currentCharID]._charColor)
+	$textBox.queue_text(dialogueString, _characters[_currentCharID]._charName, _characters[_currentCharID]._charColor)
 	decisionButtons._responseKeys = []
 	decisionButtons._responseStrings = []
 	for key in responseKeys:
@@ -112,7 +113,7 @@ func playResponse(responseKey):
 	var responseString = responseContainer[0]
 	var dialogueKey = responseContainer[1]
 	var actionKeys = responseContainer[2]
-	$textBox.queue_text_with_name(responseString, "ME", "red")
+	$textBox.queue_text(responseString, "ME", "red")
 	for key in actionKeys:
 		playAction(key)
 	playDialogue(dialogueKey)
