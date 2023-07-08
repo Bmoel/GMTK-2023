@@ -34,8 +34,6 @@ var text_queue = []
 */
 """
 func _ready():
-	#print("Starting state: State.READY")
-	queue_text_with_name("Is this working, I am a tiny bit concerned that this is not going to work", "Ben", "Orange")
 	hide_textbox()
 
 """
