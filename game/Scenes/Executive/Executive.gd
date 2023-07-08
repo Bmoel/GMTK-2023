@@ -2,6 +2,7 @@ extends Control
 
 var _characters = []
 var _currentCharID:int
+var _pendingDialogueKey:String
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -91,9 +92,18 @@ func playDialogue(dialogueKey):
 	var actionKeys = dialogueContainer[2]
 	$textBox.queue_text(dialogueString)
 	for key in responseKeys:
-		pass
+		loadResponse(key)
 	for key in actionKeys:
 		playAction(key)
+		
+func loadResponse(responseKey):
+	var responseContainer = _characters[_currentCharID]._responseTree[responseKey]
+	for button in $DecisionButtons.get_children():
+		if button._responseContainer == null:
+			button._responseString = responseContainer[0]
+			button._dialogueKey = responseContainer[1]
+			button._actionKeys = responseContainer[2]
+			button.text = button._responseString
 
 """
 /*
