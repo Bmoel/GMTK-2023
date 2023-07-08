@@ -1,6 +1,7 @@
 extends Control
 
 var _characters = []
+var _currentCharID:int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,6 +11,7 @@ func _ready():
 func initializeCharacters():
 	var dolores = load("res://Scenes/Character/Character.tscn").instance()
 	dolores._charName = "dolores"
+	dolores._charID = 0
 	var trees = getTrees("dolores")
 	dolores._dialogueTree = trees[0]
 	dolores._responseTree = trees[1]
@@ -20,19 +22,34 @@ func initializeCharacters():
 	
 func playGame():
 	openSequence()
-	for character in _characters:
-		slideCharacter("left", character)
-		playDialogue(character)
+	_currentCharID = 0
+	for id in range(0, len(_characters)):
+		slideCharacter("left", id)
+		playDialogue("d1a")
 
 func openSequence():
 	pass
 	
-func slideCharacter(direction:String, character):
-	var tween = get_tree().create_tween()
+func slideCharacter(direction:String, characterID:int):
+	var tween = get_tree().create_tween()	
+	if direction == "left":
+		tween.tween_property(_characters[characterID], "rect_position", Vector2(0,0), 0.75)
+	elif direction == "right":
+		tween.tween_property(_characters[characterID], "rect_position", Vector2(1850,0), 0.75)
 
+
+func playDialogue(dialogueKey):
+	var dialogueContainer = _characters[_currentCharID]._dialogueTree[dialogueKey]
+	var dialogueString = dialogueContainer[0]
+	var responseKeys = dialogueContainer[1]
+	var actionKeys = dialogueContainer[2]
+	$textBox.queue_text(dialogueString)
+	for key in responseKeys:
+		pass
+	for key in actionKeys:
+		playAction(key)
 	
-
-func playDialogue(character):
+func playAction(actionKey):
 	pass
 	
 func getTrees(character:String):

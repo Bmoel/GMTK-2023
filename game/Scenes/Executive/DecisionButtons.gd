@@ -17,6 +17,8 @@ func changeButtonTexts(texts:Array) -> void:
 		return
 	var inc = 0
 	for b_obj in _buttons:
+		if texts[inc] == "":
+			continue
 		b_obj.text = texts[inc]
 		inc += 1
 
