@@ -2,6 +2,7 @@ extends Control
 
 
 var _charName
+var _charColor
 var _charID
 var _dialogueTree
 var _responseTree

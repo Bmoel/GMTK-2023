@@ -3,12 +3,30 @@ extends VBoxContainer
 signal recenter_buttons(width)
 
 var _buttons:Array = [] #holds all button objects
+var _responseKeys:Array = []
+var _responseStrings:Array = []
 
 func _ready() -> void:
 	#Add all objects to _buttons array
 	for button_obj in get_children():
 		_buttons.append(button_obj)
 	changeButtonTexts(["1","2","3","4"])
+	
+func updateButtons() -> void:
+	for i in range(0,4):
+		show_button(i + 1)
+	var numButtons = len(_responseStrings)
+	var newTexts = []
+	for i in range(0, numButtons):
+		var responseString = _responseStrings[i]
+		newTexts.append(responseString)
+	for i in range(numButtons + 1, 5):
+		newTexts.append("")
+		hide_button(i + 1)
+	changeButtonTexts(newTexts)
+			
+		
+		
 
 #Changes all internal texts of buttons
 #NOTE: IF WANT TO KEEP SAME TEXT AS BEFORE, USE ""
@@ -50,16 +68,28 @@ func show_button(button_num: int):
 
 #Button 1 pressed
 func _on_b1_pressed() -> void:
-	pass # Replace with function body.
+	var executive = get_parent().get_parent()
+	if not executive.get_node("textBox")._blockingInput:
+		var responseKey = _responseKeys[0]
+		executive.playResponse(responseKey)
 
 #Button 2 pressed
 func _on_b2_pressed() -> void:
-	pass # Replace with function body.
+	var executive = get_parent().get_parent()
+	if not executive.get_node("textBox")._blockingInput:
+		var responseKey = _responseKeys[1]
+		executive.playResponse(responseKey)
 
 #Button 3 pressed
 func _on_b3_pressed() -> void:
-	pass # Replace with function body.
+	var executive = get_parent().get_parent()
+	if not executive.get_node("textBox")._blockingInput:
+		var responseKey = _responseKeys[2]
+		executive.playResponse(responseKey)
 
 #Button 4 pressed
 func _on_b4_pressed() -> void:
-	pass # Replace with function body.
+	var executive = get_parent().get_parent()
+	if not executive.get_node("textBox")._blockingInput:
+		var responseKey = _responseKeys[3]
+		executive.playResponse(responseKey)

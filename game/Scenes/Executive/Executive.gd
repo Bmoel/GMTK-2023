@@ -3,11 +3,12 @@ extends Control
 var _characters = []
 var _currentCharID:int
 var _pendingDialogueKey:String
+onready var decisionButtons = $ButtonLayer/DecisionButtons
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
-	$ButtonLayer/DecisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
+	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	initializeCharacters()
 	playGame()
 
@@ -23,6 +24,7 @@ func _ready():
 func initializeCharacters():
 	var dolores = load("res://Scenes/Character/Character.tscn").instance()
 	dolores._charName = "dolores"
+	dolores._charColor = "blue"
 	dolores._charID = 0
 	var trees = getTrees("dolores")
 	dolores._dialogueTree = trees[0]
@@ -90,20 +92,30 @@ func playDialogue(dialogueKey):
 	var dialogueString = dialogueContainer[0]
 	var responseKeys = dialogueContainer[1]
 	var actionKeys = dialogueContainer[2]
-	$textBox.queue_text(dialogueString)
+	$textBox.queue_text_with_name(dialogueString, _characters[_currentCharID]._charName, _characters[_currentCharID]._charColor)
+	decisionButtons._responseKeys = []
+	decisionButtons._responseStrings = []
 	for key in responseKeys:
 		loadResponse(key)
+	decisionButtons.updateButtons()
 	for key in actionKeys:
 		playAction(key)
 		
 func loadResponse(responseKey):
+	decisionButtons._responseKeys.append(responseKey)
 	var responseContainer = _characters[_currentCharID]._responseTree[responseKey]
-	for button in $DecisionButtons.get_children():
-		if button._responseContainer == null:
-			button._responseString = responseContainer[0]
-			button._dialogueKey = responseContainer[1]
-			button._actionKeys = responseContainer[2]
-			button.text = button._responseString
+	var responseString = responseContainer[0]
+	decisionButtons._responseStrings.append(responseString)
+	
+func playResponse(responseKey):
+	var responseContainer = _characters[_currentCharID]._responseTree[responseKey]
+	var responseString = responseContainer[0]
+	var dialogueKey = responseContainer[1]
+	var actionKeys = responseContainer[2]
+	$textBox.queue_text_with_name(responseString, "ME", "red")
+	for key in actionKeys:
+		playAction(key)
+	playDialogue(dialogueKey)
 
 """
 /*
@@ -130,10 +142,15 @@ func getTrees(character:String):
 	var responseDict = {}
 	if character == "dolores":
 		dialogueDict["d1a"] = ["I don't know what you think you're going to get out of me. I already told you, I never met the guy.", ["r1a", "r1b", "r1c"], []]
-		responseDict["r1a"] = ["Wait, what? Where I am?", "d2a", []]
-		responseDict["r1a"] = ["What guy?", "d2b", []]
+		responseDict["r1a"] = ["Wait, what? Where am I?", "d2a", []]
+		responseDict["r1b"] = ["What guy?", "d2b", []]
 		responseDict["r1c"] = ["Why don't you go ahead and tell it again.", "d2c", []]
+		dialogueDict["d2a"] = ["Hello? What do you mean? You said you were a detective?", ["r2a", "r2b"], []]
+		dialogueDict["d2b"] = ["The murder victim. I told you I'd never met him before. Why are you interrogating me?", ["r2c", "r2d"], []]
+		dialogueDict["d2c"] = ["Ugh. You could just take notes, you know. But fine. I was ... (TBC)", ["r2e", "r2f"], []]
+		responseDict["r2a"] = ["I'm not a detective. Where the hell am I? Who are you?", "d3a", []]
+		responseDict["r2b"] = ["I mean from your perspective, where am I? What does this place mean to you? Why are you here?", "d3b", []]
 	return [dialogueDict, responseDict]
 
 func _recenter_buttons(width:int):
-	$ButtonLayer/DecisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)
+	decisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)

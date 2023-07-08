@@ -24,6 +24,7 @@ enum State {
 
 var current_state = State.READY
 var text_queue = []
+var _blockingInput:bool
 
 """
 /*
@@ -35,6 +36,7 @@ var text_queue = []
 """
 func _ready():
 	hide_textbox()
+	_blockingInput = false
 
 """
 /*
@@ -49,6 +51,7 @@ func _process(_delta): #change to delta if used
 		State.READY:
 			#if in ready state and the queue is not empty, display the text
 			if !text_queue.empty():
+				_blockingInput = true
 				display_text()
 				GlobalSignals.emit_signal("textbox_shift",true)
 		State.READING:
@@ -69,6 +72,8 @@ func _process(_delta): #change to delta if used
 				GlobalSignals.emit_signal("textbox_shift",false)
 				if text_queue.empty():
 					GlobalSignals.emit_signal("textbox_empty")
+					$Timer.start()
+					
 """
 /*
 * @pre None
@@ -213,3 +218,7 @@ func queue_file(file_name: String):
 func _on_Tween_tween_completed(_object, _key): #remove underscores if want to use variables
 	end_symbol.text = "> "
 	change_state(State.FINISHED)
+
+
+func _on_Timer_timeout():
+	_blockingInput = false
