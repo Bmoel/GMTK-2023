@@ -11,10 +11,10 @@ func _ready() -> void:
 	for button_obj in get_children():
 		_buttons.append(button_obj)
 	changeButtonTexts(["1","2","3","4"])
+	GlobalSignals.connect("textbox_empty", self, "_updateButtons")
 	
-func updateButtons() -> void:
-	for i in range(0,4):
-		show_button(i + 1)
+func _updateButtons() -> void:
+	buttonVisibility(true)
 	var numButtons = len(_responseStrings)
 	var newTexts = []
 	for i in range(0, numButtons):
@@ -23,10 +23,7 @@ func updateButtons() -> void:
 	for i in range(numButtons + 1, 5):
 		newTexts.append("")
 		hide_button(i + 1)
-	changeButtonTexts(newTexts)
-			
-		
-		
+	changeButtonTexts(newTexts)	
 
 #Changes all internal texts of buttons
 #NOTE: IF WANT TO KEEP SAME TEXT AS BEFORE, USE ""

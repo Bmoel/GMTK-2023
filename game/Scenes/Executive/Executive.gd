@@ -89,6 +89,7 @@ func slideCharacter(direction:String, characterID:int):
 */
 """
 func playDialogue(dialogueKey):
+	decisionButtons.buttonVisibility(false)
 	var dialogueContainer = _characters[_currentCharID]._dialogueTree[dialogueKey]
 	var dialogueString = dialogueContainer[0]
 	var responseKeys = dialogueContainer[1]
@@ -98,7 +99,6 @@ func playDialogue(dialogueKey):
 	decisionButtons._responseStrings = []
 	for key in responseKeys:
 		loadResponse(key)
-	decisionButtons.updateButtons()
 	for key in actionKeys:
 		playAction(key)
 		
