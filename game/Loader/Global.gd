@@ -1,5 +1,10 @@
 extends Node
 
+#GLOBAL VOLUME
+var masterVol:int = 0
+var musicVol:int = 0
+var sfxVol:int = 0
+
 const COLORS:Dictionary = {
 	"blue": "#2245d4",
 	"red": "#c72820",

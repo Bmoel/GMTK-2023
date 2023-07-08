@@ -15,3 +15,19 @@ signal textbox_shift(value)
 """
 # warning-ignore:unused_signal
 signal textbox_empty()
+
+"""
+* Purpose - Send a signal when a typebox enters text
+* Used in - typeBox.gd
+* Parameter - text (text that user entered)
+"""
+# warning-ignore:unused_signal
+signal typebox_submit(text)
+
+"""
+* Purpose: To let main menu whether to select button or not
+* Used in: Credits.gd
+* Params: value (boolean, true if to select)
+"""
+# warning-ignore:unused_signal
+signal unselect_credits_button(value)
