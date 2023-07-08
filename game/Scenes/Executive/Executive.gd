@@ -10,6 +10,7 @@ func _ready():
 func initializeCharacters():
 	var dolores = load("res://Scenes/Character/Character.tscn").instance()
 	dolores._charName = "dolores"
+	dolores._charID = 0
 	var trees = getTrees("dolores")
 	dolores._dialogueTree = trees[0]
 	dolores._responseTree = trees[1]
@@ -20,17 +21,20 @@ func initializeCharacters():
 	
 func playGame():
 	openSequence()
-	for character in _characters:
-		slideCharacter("left", character)
-		playDialogue(character)
+	for id in range(0, len(_characters)):
+		slideCharacter("left", id)
+		playDialogue(id)
 
 func openSequence():
 	pass
 	
-func slideCharacter(direction:String, character):
-	var tween = get_tree().create_tween()
+func slideCharacter(direction:String, characterID:int):
+	var tween = get_tree().create_tween()	
+	if direction == "left":
+		tween.tween_property(_characters[characterID], "rect_position", Vector2(0,0), 0.75)
+	elif direction == "right":
+		tween.tween_property(_characters[characterID], "rect_position", Vector2(1850,0), 0.75)
 
-	
 
 func playDialogue(character):
 	pass
