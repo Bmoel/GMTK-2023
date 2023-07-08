@@ -5,8 +5,11 @@ var _currentCharID:int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# warning-ignore:return_value_discarded
+	$ButtonLayer/DecisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	initializeCharacters()
 	playGame()
+
 
 """
 /*
@@ -121,3 +124,6 @@ func getTrees(character:String):
 		responseDict["r1a"] = ["What guy?", "d2b", []]
 		responseDict["r1c"] = ["Why don't you go ahead and tell it again.", "d2c", []]
 	return [dialogueDict, responseDict]
+
+func _recenter_buttons(width:int):
+	$ButtonLayer/DecisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)

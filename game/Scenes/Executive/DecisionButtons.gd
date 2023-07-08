@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal recenter_buttons(width)
+
 var _buttons:Array = [] #holds all button objects
 
 func _ready() -> void:
@@ -21,6 +23,12 @@ func changeButtonTexts(texts:Array) -> void:
 			continue
 		b_obj.text = texts[inc]
 		inc += 1
+
+#Changes the widths of ALL buttons
+#recentered back inside of Executive.gd
+func changeButtonWidths(width: int):
+	rect_size.x = width
+	emit_signal("recenter_buttons", width)
 
 #Hide button you want
 #NOTE: You enter 1-4, it will subtract 1 for you
