@@ -6,12 +6,15 @@ var _characters = []
 var _currentCharID:int
 var _pendingDialogueKey:String
 onready var decisionButtons = $ButtonLayer/DecisionButtons
+onready var blink = $Blink/AnimationPlayer
+onready var canvasVis = $Blink
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	initializeCharacters()
+	playBlink()
 	playGame()
 
 """
@@ -155,3 +158,18 @@ func getTrees(character:String):
 
 func _recenter_buttons(width:int):
 	decisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)
+
+"""
+/*
+* @pre Called during ready function
+* @post None
+* @param None
+* @return None
+* Plays blink anim
+*/
+"""	
+func playBlink():
+	canvasVis.visible = true
+	blink.play("Blink")
+	yield(blink, "animation_finished")
+	canvasVis.visible = false
