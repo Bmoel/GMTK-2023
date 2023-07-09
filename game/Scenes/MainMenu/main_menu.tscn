@@ -1,11 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/MainMenu/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Font/mm_text.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/sfx/mainmenu.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Font/main_menu.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Assets/sfx/myTongue.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/sfx/click.wav" type="AudioStream" id=6]
 
 [sub_resource type="Theme" id=1]
+
+[sub_resource type="ButtonGroup" id=2]
+resource_name = "menu_buttons"
 
 [node name="mainmenu" type="Node2D"]
 script = ExtResource( 1 )
@@ -44,43 +49,57 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Start" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="Start" type="Button" parent="CanvasLayer/VBoxContainer" groups=["menu_buttons"]]
 margin_right = 344.0
 margin_bottom = 50.0
 focus_neighbour_top = NodePath("../Exit")
 custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_fonts/font = ExtResource( 2 )
+group = SubResource( 2 )
 text = "Start"
 icon_align = 1
 
-[node name="Options" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="Options" type="Button" parent="CanvasLayer/VBoxContainer" groups=["menu_buttons"]]
 margin_top = 54.0
 margin_right = 344.0
 margin_bottom = 104.0
 custom_fonts/font = ExtResource( 2 )
+group = SubResource( 2 )
 text = "Options"
 icon_align = 1
 
-[node name="Credits" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="Credits" type="Button" parent="CanvasLayer/VBoxContainer" groups=["menu_buttons"]]
 margin_top = 108.0
 margin_right = 344.0
 margin_bottom = 158.0
 custom_fonts/font = ExtResource( 2 )
+group = SubResource( 2 )
 text = "Credits"
 icon_align = 1
 
-[node name="Exit" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="Exit" type="Button" parent="CanvasLayer/VBoxContainer" groups=["menu_buttons"]]
 margin_top = 162.0
 margin_right = 344.0
 margin_bottom = 212.0
 focus_neighbour_bottom = NodePath("../Start")
 custom_fonts/font = ExtResource( 2 )
+group = SubResource( 2 )
 text = "Exit"
 icon_align = 1
 
 [node name="mainmenu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 bus = "Music"
+
+[node name="click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = 24.0
+bus = "SFX"
+
+[node name="button_down" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = 4.0
+bus = "SFX"
 
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Options" to="." method="_on_Options_pressed"]
