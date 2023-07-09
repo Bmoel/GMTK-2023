@@ -268,6 +268,7 @@ func _button_down():
 	$button_down.play()
 
 func _dolores_speak(check):
+	d_is_speak = check
 	if check:
 		dpos.play()
 		
@@ -276,6 +277,7 @@ func _dolores_speak(check):
 		dpos.frame = 0
 
 func _fred_speak(check):
+	f_is_speak = check
 	if check:
 		fpos.play()
 		
