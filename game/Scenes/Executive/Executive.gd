@@ -62,9 +62,8 @@ func initializeCharacters():
 func playGame():
 	playBlink()
 	_currentCharID = 0
-	for id in range(0, len(_characters)):
-		slideCharacter("left", id)
-		playDialogue("d1a")
+	slideCharacter("left", _currentCharID)
+	playDialogue("d1a")
 
 """
 /*
@@ -137,6 +136,9 @@ func playAction(actionKey):
 		raiseExposure(5)
 	if actionKey == "highExposure":
 		raiseExposure(10)
+	if actionKey == "nextChar":
+		_currentCharID = 1
+		playDialogue("d1a")
 		
 func raiseExposure(level:int):
 	exposureLevel += level
@@ -157,20 +159,38 @@ func getTrees(character:String):
 	var responseDict = {}
 	if character == "dolores":
 		dialogueDict["d1a"] = ["I don't know what you think you're going to get out of me. I already told you, I never met the guy.", ["r1a", "r1b", "r1c"], []]
+		
 		responseDict["r1a"] = ["Wait, what? Where am I?", "d2a", ["highExposure"]]
 		responseDict["r1b"] = ["What guy?", "d2b", ["midExposure"]]
 		responseDict["r1c"] = ["Why don't you go ahead and tell it again.", "d2c", []]
+		
 		dialogueDict["d2a"] = ["Hello? What do you mean? You said you were a detective?", ["r2a", "r2b"], []]
 		dialogueDict["d2b"] = ["The murder victim. I told you I'd never met him before tonight. Why are you interrogating me?", ["r2c", "r2d"], []]
 		dialogueDict["d2c"] = ["Ugh. You could just take notes, you know. But fine. I thought he seemed a rather boring fellow. Going on and on about Nascar, or whatever those racecars are they have in Europe. You must have thought so too. Then the lights went out, and I heard that awful shriek. I screamed too, you know. And when the lights came back on I was still seated exactly where I had been. This same seat. Did I miss anything?", ["r2e", "r2f"], []]
-		responseDict["r2a"] = ["I'm not a detective. Where the hell am I? Is that the moon out the window?", "d3a", ["highExposure"]]
-		responseDict["r2b"] = ["I mean from your perspective, where am I? What does this place mean to you? Why are you here?", "d3b", []]
+		
+		responseDict["r2a"] = ["I'm not a detective. Is that the MOON out the window?", "d3a", ["highExposure"]]
+		responseDict["r2b"] = ["I mean, what does this place mean to you? Why are you here?", "d3b", []]
 		responseDict["r2c"] = ["But you might have seen something.", "d3c", ["midExposure"]]
 		responseDict["r2d"] = ["Well, what were your first impressions of him?", "d3d", []]
-		dialogueDict["d3a"] = ["What are you talking about? We were enjoying a nice dinner together, you know, polite chit-chat before our host arrived, nothing serious, when suddenly Mr. ... Martin here was STABBED. Is this ringing a bell? Are you suffering from shock?", ["0"], []]
-		dialogueDict["d3b"] = ["Well ... it's the home of my ... associate. Mr. Franklin Devino Rotwell. He invited me to this gorgeous mansion of his to discuss a business proposition. When I arrived I found several strangers: you, Mr. Arcwright, and Mr. ... Martin, God rest his soul waiting. It was to be a joint proposition, was my thinking. Now I don't know what to think.", ["0"], []]
-		dialogueDict["d3c"] = ["It was pitch black. Do you mistake me for a rabbit?", ["0"], []]
-		dialogueDict["d3d"] = ["I thought he seemed a rather boring fellow. Going on and on about Nascar, or whatever those racecars are they have in Europe. Still, he hardly deserved to be STABBED for that! He seemed a nice enough guy.", ["0"], []]
+		responseDict["r2e"] = ["And nothing stands out to you about today, besides the murder?", "d3e", ["midExposure"]]
+		responseDict["r2f"] = ["No, that all checks out. Thank you for talking with me.", "0", ["nextChar"]]
+		
+		dialogueDict["d3a"] = ["What are you talking about? We were enjoying a nice dinner together, you know, polite chit-chat before our host arrived, nothing serious, when suddenly Mr. ... Martin here was STABBED. Is this ringing a bell? Are you suffering from shock?", ["r3a", "r3b"], []]
+		dialogueDict["d3b"] = ["Well ... it's the home of my ... associate. Mr. Franklin Devino Rotwell. He invited me to this gorgeous mansion of his to discuss a business proposition. When I arrived I found several strangers: you, Mr. Arcwright, and Mr. ... Martin, God rest his soul waiting. It was to be a joint proposition, was my thinking. Now I don't know what to think.", ["r3c", "r3d"], []]
+		dialogueDict["d3c"] = ["It was pitch black. Do you mistake me for a rabbit?", ["r3b", "r3d", "r3e"], []]
+		dialogueDict["d3d"] = ["I thought he seemed a rather boring fellow. Going on and on about Nascar, or whatever those racecars are they have in Europe. Still, he hardly deserved to be STABBED for that! He seemed a nice enough guy.", ["r3b", "r3e"], []]
+		dialogueDict["d3e"] = ["BESIDES the murder? No, I dare say I expected nothing from today but a pleasant and potentially rewarding evening.", ["r3g"], []]
+		
+		responseDict["r3a"] = ["Forgive me. Yes, I had some questions for you. Did you see anything?", "d3c", []]
+		responseDict["r3b"] = ["What does the room we're in look like to you?", "d4a", ["highExposure"]]
+		responseDict["r3c"] = ["Just because of the murder? Or is there something besides that?", "d3e", ["midExposure"]]
+		responseDict["r3d"] = ["What were your first impressions of Mr. Martin?", "d3d", []]
+		responseDict["r3e"] = ["And nothing stands out to you about today, besides the murder?", "d3e", ["midExposure"]]
+		responseDict["r3f"] = ["No, that all checks out. Thank you for talking with me.", "0", ["nextChar"]]
+		responseDict["r3f"] = ["That all checks out. Thank you for talking with me.", "0", ["nextChar"]]
+		
+		dialogueDict["d4a"] = ["Well, it speaks of rather rich tastes, doesn't it? Oh, but I do love the color everywhere. To have the time to cultivate such plants as these in the comfort of your own home. Though I'm sure Mr. Rotwell has servants for that. I would kill for this mahogany floor of his, even if I had to scrub it myself. And don't even get me started on the view. I've always wanted to live by the coast.", ["r3f"], []]
+		
 		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], []]
 		responseDict["0"] = ["END OF RESPONSES REACHED", "0", []]
 	return [dialogueDict, responseDict]
