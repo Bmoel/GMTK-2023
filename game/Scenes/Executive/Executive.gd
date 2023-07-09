@@ -33,13 +33,25 @@ func _process(delta):
 		if bg_music.volume_db >= -10:
 			fade_in = false
 	if d_is_speak:
-		pass
+		if dpos.self_modulate.a < 1:
+			dpos.self_modulate.a += .75*delta
+			dpos.scale.x += .05*delta
+			dpos.scale.y += .05*delta
 	else:
-		pass
+		if dpos.self_modulate.a >.5:
+			dpos.self_modulate.a -= .75*delta
+			dpos.scale.x -= .05*delta
+			dpos.scale.y -= .05*delta
 	if f_is_speak:
-		pass
+		if fpos.self_modulate.a < 1:
+			fpos.self_modulate.a += .75*delta
+			fpos.scale.x += .05*delta
+			fpos.scale.y += .05*delta
 	else:
-		pass
+		if fpos.self_modulate.a >.5:
+			fpos.self_modulate.a -= .75*delta
+			fpos.scale.x -= .05*delta
+			fpos.scale.y -= .05*delta
 """
 /*
 * @pre Called once to initialize Character objects
@@ -319,3 +331,5 @@ func _fred_speak(check):
 	else:
 		fpos.stop()
 		fpos.frame = 0
+
+
