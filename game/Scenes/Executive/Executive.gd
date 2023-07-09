@@ -59,7 +59,7 @@ func _process(delta):
 * @param None
 * @return None
 */
-"""	
+"""
 func initializeCharacters():
 	var dolores = load("res://Scenes/Character/Character.tscn").instance()
 	var fred = load("res://Scenes/Character/Character.tscn").instance()
@@ -88,8 +88,8 @@ func initializeCharacters():
 	fred.get_node("CanvasLayer").get_node("woman").visible = false
 	dpos.frame = 0
 	fpos.frame = 0
-	dpos.position = Vector2(-500,500)
-	fpos.position = Vector2(2400,500)
+	dpos.position = Vector2(-500,650)
+	fpos.position = Vector2(2400,600)
 	
 
 
@@ -120,8 +120,8 @@ func playGame():
 func slideCharacter():
 	var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	var tween2 := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	tween.tween_property(dpos, "position", Vector2(300,500), 5)
-	tween2.tween_property(fpos, "position", Vector2(1600,500), 5)
+	tween.tween_property(dpos, "position", Vector2(300,650), 5)
+	tween2.tween_property(fpos, "position", Vector2(1600,600), 5)
 
 
 
