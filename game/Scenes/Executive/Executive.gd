@@ -5,18 +5,28 @@ onready var _buttons = $ButtonLayer/DecisionButtons
 var _characters = []
 var _currentCharID:int
 var _pendingDialogueKey:String
+var fade_in = true
 onready var decisionButtons = $ButtonLayer/DecisionButtons
 onready var blink = $Blink/AnimationPlayer
 onready var canvasVis = $Blink
+onready var bg_music = $bg
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
+	init_bg()
+	init_button()
 	initializeCharacters()
 	playBlink()
 	playGame()
 
+func _process(delta):
+	if fade_in:
+		bg_music.volume_db += 30*delta
+		if bg_music.volume_db >= -10:
+			fade_in = false
 """
 /*
 * @pre Called once to initialize Character objects
@@ -173,3 +183,36 @@ func playBlink():
 	blink.play("Blink")
 	yield(blink, "animation_finished")
 	canvasVis.visible = false
+"""
+/*
+* @pre Called during ready function
+* @post BG playing
+* @param None
+* @return None
+* Initializes the background music
+*/
+"""	
+func init_bg():
+	bg_music.volume_db = -60
+	bg_music.play()
+
+"""
+/*
+* @pre Called during ready function
+* @post buttons added to group "my_buttons"
+* @param None
+* @return None
+* Initializes the background music
+*/
+"""	
+func init_button():
+	for button in get_tree().get_nodes_in_group("my_buttons"):
+		button.connect("mouse_entered", self, "_mouse_button_entered")
+		button.connect("focus_entered", self, "_mouse_button_entered")
+		button.connect("button_down", self, "_button_down")
+		
+		
+func _mouse_button_entered():
+	$click.play()
+func _button_down():
+	$button_down.play()
