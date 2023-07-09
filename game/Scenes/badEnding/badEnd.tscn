@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/textBox/textBox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/badEnding/badEnd.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Font/Silver.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 240
+outline_size = 2
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 100
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 100
+font_data = ExtResource( 3 )
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="GameOver" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 568.0
+margin_top = 136.0
+margin_right = 1239.0
+margin_bottom = 402.0
+custom_colors/font_color = Color( 0.560784, 0.0980392, 0.0980392, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Game Over"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
+margin_left = 760.0
+margin_top = 416.0
+margin_right = 1017.0
+margin_bottom = 677.0
+custom_constants/separation = 25
+
+[node name="MainMenu" type="Button" parent="VBoxContainer"]
+margin_right = 257.0
+margin_bottom = 118.0
+focus_neighbour_top = NodePath("../Exit")
+custom_fonts/font = SubResource( 2 )
+text = "MainMenu"
+
+[node name="Exit" type="Button" parent="VBoxContainer"]
+margin_top = 143.0
+margin_right = 257.0
+margin_bottom = 261.0
+focus_neighbour_bottom = NodePath("../MainMenu")
+custom_fonts/font = SubResource( 3 )
+text = "Exit"
+
+[node name="textBox" parent="." instance=ExtResource( 1 )]
+
+[connection signal="pressed" from="VBoxContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_Exit_pressed"]

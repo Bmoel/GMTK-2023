@@ -1,7 +1,5 @@
 extends Node2D
 
-signal openingDone()
-
 onready var textbox = $textBox
 onready var typebox = $typeBox
 onready var colorRect = $ColorRect

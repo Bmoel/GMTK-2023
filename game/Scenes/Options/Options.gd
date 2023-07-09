@@ -25,7 +25,8 @@ func _ready():
 * Return: None
 """
 func _on_MasterVolSlider_value_changed(value) -> void:
-	update_volume(MASTER_VOLUME,value)
+	if (Global.masterVol != -20) or (value != -20):
+		update_volume(MASTER_VOLUME,value)
 
 """
 * Pre: Slider moved
@@ -34,7 +35,8 @@ func _on_MasterVolSlider_value_changed(value) -> void:
 * Return: None
 """
 func _on_MusicVolSlider_value_changed(value):
-	update_volume(MUSIC_VOLUME,value)
+	if (Global.musicVol != -20) or (value != -20):
+		update_volume(MUSIC_VOLUME,value)
 
 """
 * Pre: Slider moved
@@ -43,7 +45,8 @@ func _on_MusicVolSlider_value_changed(value):
 * Return: None
 """
 func _on_SFXVolSlider_value_changed(value) -> void:
-	update_volume(SFX_VOLUME,value)
+	if (Global.sfxVol != -20) or (value != -20):
+		update_volume(SFX_VOLUME,value)
 
 """
 * Pre: one of the volume sliders was changed
