@@ -134,14 +134,19 @@ func playResponse(responseKey):
 func playAction(actionKey):
 	if actionKey == "midExposure":
 		raiseExposure(5)
-	if actionKey == "highExposure":
+	elif actionKey == "highExposure":
 		raiseExposure(10)
-	if actionKey == "nextChar":
+	elif actionKey == "nextChar":
 		_currentCharID = 1
 		playDialogue("d1a")
+	elif actionKey == "goodEnding":
+		print("You wake up the next morning with no memory of the previous night's experience, except for in a vague notion of having narrowly avoided a grisly fate.")
 		
 func raiseExposure(level:int):
 	$ButtonLayer/AwareMeter.updateExposure(level)
+	exposureLevel += level
+	if exposureLevel > 30:
+		print("The aliens have detected your awareness of the dinner party simulation. They extinguish your life as they did Mr. Martin's.")
 
 """
 /*
@@ -188,6 +193,21 @@ func getTrees(character:String):
 		responseDict["r3g"] = ["That all checks out. Thank you for talking with me.", "0", ["nextChar"]]
 		
 		dialogueDict["d4a"] = ["Well, it speaks of rather rich tastes, doesn't it? Oh, but I do love the color everywhere. To have the time to cultivate such plants as these in the comfort of your own home. Though I'm sure Mr. Rotwell has servants for that. I would kill for this mahogany floor of his, even if I had to scrub it myself. And don't even get me started on the view. I've always wanted to live by the coast.", ["r3f"], []]
+		
+		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], []]
+		responseDict["0"] = ["END OF RESPONSES REACHED", "0", []]
+	elif character == "fred":
+		dialogueDict["d1a"] = ["Interesting night we're having, eh?", ["r1a", "r1b", "r1c"], []]
+		
+		responseDict["r1a"] = ["Just another day in high society, in my view.", "d2a", []]
+		responseDict["r1b"] = ["More interesting than I've seen, even as a detective.", "d2b", ["midExposure"]]
+		responseDict["r1c"] = ["There's something here some of us aren't seeing. Is that right?", "d2c", ["highExposure"]]
+		
+		dialogueDict["d2a"] = ["Well, you're welcome to your opinion. It's all business at the end of the day. At least until someone gets murdered. I find it interesting that you're here at all detective. Then again, this whole situation is ... interesting. After all, regardless of whether one of us three is guilty ... somebody has to have pulled the lights.", ["0"], []]
+		dialogueDict["d2b"] = ["Well detective, what's your diagnosis?", ["r2b"], []]
+		dialogueDict["d2b"] = ["I do believe you're onto something. What's your diagnosis?", ["r2b"], []]
+		
+		responseDict["r2b"] = ["I think that we should finish our dinner. Forget the murder. And go home. If we can find our way.", "d2a", ["goodEnding"]]
 		
 		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], []]
 		responseDict["0"] = ["END OF RESPONSES REACHED", "0", []]
