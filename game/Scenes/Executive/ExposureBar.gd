@@ -1,7 +1,7 @@
 extends Sprite
 
 var path = "res://Assets/Meter"
-var offenses = 0
+var total_level = 0
 var words:Dictionary = {
 	0: "Blank.png",
 	1: "One.png",
@@ -11,9 +11,10 @@ var words:Dictionary = {
 	5: "Five.png"
 }
 
-func updateAwareness():
-	offenses += 1
-	if offenses > 5:
+func updateExposure(value: int):
+	total_level += value
+	if total_level >= 30:
 		print('TODO: IMPLEMENT GAME OVER IN AwarenessBar.gd')
 		return
+	var offenses = int(total_level / 5)
 	texture = load(path + words.get(offenses))

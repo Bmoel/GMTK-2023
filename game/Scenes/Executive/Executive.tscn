@@ -9,7 +9,7 @@
 [ext_resource path="res://Assets/sfx/myTongue.wav" type="AudioStream" id=7]
 [ext_resource path="res://Assets/sfx/click.wav" type="AudioStream" id=8]
 [ext_resource path="res://Assets/Background.png" type="Texture" id=9]
-[ext_resource path="res://Scenes/Executive/AwarenessBar.gd" type="Script" id=10]
+[ext_resource path="res://Scenes/Executive/ExposureBar.gd" type="Script" id=10]
 [ext_resource path="res://Assets/MeterBlank.png" type="Texture" id=11]
 
 [sub_resource type="Environment" id=13]
@@ -289,14 +289,14 @@ scale = Vector2( 0.9, 0.9 )
 texture = ExtResource( 11 )
 script = ExtResource( 10 )
 
-[node name="Awareness" type="Label" parent="ButtonLayer/AwareMeter"]
+[node name="Exposure" type="Label" parent="ButtonLayer/AwareMeter"]
 margin_left = -915.555
 margin_top = -506.667
 margin_right = -515.555
 margin_bottom = -445.667
 custom_colors/font_color = Color( 0.662745, 0.0941176, 0.0941176, 1 )
 custom_fonts/font = SubResource( 18 )
-text = "Awareness"
+text = "Exposure"
 
 [node name="textBox" parent="." instance=ExtResource( 4 )]
 

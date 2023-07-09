@@ -139,9 +139,7 @@ func playAction(actionKey):
 		raiseExposure(10)
 		
 func raiseExposure(level:int):
-	exposureLevel += level
-	if exposureLevel > 30:
-		print("You died!")
+	$ButtonLayer/AwareMeter.updateExposure(level)
 
 """
 /*
