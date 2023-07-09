@@ -10,6 +10,8 @@ var exposureLevel:int
 var dpos
 var fpos
 
+var d_is_speak = false
+var f_is_speak = false
 var fade_in = true
 onready var blink = $Blink/AnimationPlayer
 onready var canvasVis = $Blink
@@ -32,6 +34,14 @@ func _process(delta):
 		bg_music.volume_db += 30*delta
 		if bg_music.volume_db >= -10:
 			fade_in = false
+	if d_is_speak:
+		pass
+	else:
+		pass
+	if f_is_speak:
+		pass
+	else:
+		pass
 """
 /*
 * @pre Called once to initialize Character objects
@@ -62,10 +72,12 @@ func initializeCharacters():
 
 	add_child(dolores)
 	add_child(fred)
-	dpos = dolores.get_node("CanvasLayer").get_node("AnimatedSprite")
-	fpos = fred.get_node("CanvasLayer").get_node("AnimatedSprite")
+	dpos = dolores.get_node("CanvasLayer").get_node("woman")
+	dolores.get_node("CanvasLayer").get_node("man").visible = false
+	fpos = fred.get_node("CanvasLayer").get_node("man")
+	fred.get_node("CanvasLayer").get_node("woman").visible = false
 	dpos.frame = 0
-	fpos.frame = 2
+	fpos.frame = 0
 	dpos.position = Vector2(-500,500)
 	fpos.position = Vector2(2400,500)
 	
@@ -83,6 +95,7 @@ func initializeCharacters():
 func playGame():
 	playBlink()
 	_currentCharID = 0
+	_fred_speak(1)
 	slideCharacter()
 	playDialogue("d1a")
 
@@ -254,3 +267,18 @@ func _mouse_button_entered():
 func _button_down():
 	$button_down.play()
 
+func _dolores_speak(check):
+	if check:
+		dpos.play()
+		
+	else:
+		dpos.stop()
+		dpos.frame = 0
+
+func _fred_speak(check):
+	if check:
+		fpos.play()
+		
+	else:
+		fpos.stop()
+		fpos.frame = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Character/Character.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Woman.png" type="Texture" id=2]
@@ -14,19 +14,27 @@ flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 580, 0, 565, 1000 )
 
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 10, 0, 575, 1000 )
+region = Rect2( 0, 0, 583, 1000 )
 
 [sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 585, 0, 575, 1000 )
+region = Rect2( 583, 0, 583, 1000 )
 
-[sub_resource type="SpriteFrames" id=3]
+[sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 4 ), SubResource( 5 ) ],
+"frames": [ SubResource( 4 ), SubResource( 5 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -38,8 +46,8 @@ script = ExtResource( 1 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 4
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="CanvasLayer"]
+[node name="woman" type="AnimatedSprite" parent="CanvasLayer"]
 frames = SubResource( 3 )
-frame = 1
 
-[node name="Tween" type="Tween" parent="CanvasLayer/AnimatedSprite"]
+[node name="man" type="AnimatedSprite" parent="CanvasLayer"]
+frames = SubResource( 6 )
