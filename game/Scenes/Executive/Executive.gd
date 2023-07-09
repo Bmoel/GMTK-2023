@@ -6,7 +6,7 @@ onready var _pendingDialogueKey = null
 
 var _characters = []
 var _currentCharID:int
-var exposureLevel:int
+var _current_char_speaking: String = ""
 var dpos
 var fpos
 
@@ -21,7 +21,10 @@ onready var bg_music = $bg
 func _ready():
 	# warning-ignore:return_value_discarded
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
+	# warning-ignore:return_value_discarded
 	GlobalSignals.connect("textbox_empty", self, "_playPendingDialogue")
+	# warning-ignore:return_value_discarded
+	GlobalSignals.connect("currentSpeaker", self, "_currentSpeaker")
 	init_bg()
 	init_button()
 	initializeCharacters()
@@ -144,6 +147,7 @@ func playDialogue(dialogueKey):
 	if len(dialogueString) > 60:
 		decisionButtons.changeButtonWidths(2)
 	$textBox.queue_text(dialogueString, _characters[_currentCharID]._charName, _characters[_currentCharID]._charColor)
+	$textBox.is_dialogue = true
 	decisionButtons._responseKeys = []
 	decisionButtons._responseStrings = []
 	for key in responseKeys:
@@ -162,7 +166,8 @@ func playResponse(responseKey):
 	var responseString = responseContainer[0]
 	var dialogueKey = responseContainer[1]
 	var actionKeys = responseContainer[2]
-	$textBox.queue_text(responseString, "Me", "red")
+	$textBox.queue_text(responseString)
+	$textBox.is_dialogue = false
 	for key in actionKeys:
 		playAction(key)
 	_pendingDialogueKey = dialogueKey
@@ -188,9 +193,6 @@ func playAction(actionKey):
 		
 func raiseExposure(level:int):
 	$ButtonLayer/AwareMeter.updateExposure(level)
-	exposureLevel += level
-	if exposureLevel > 30:
-		print("The aliens have detected your awareness of the dinner party simulation. They extinguish your life as they did Mr. Martin's.")
 
 """
 /*
@@ -235,7 +237,7 @@ func getTrees(character:String):
 		responseDict["r3e"] = ["And nothing stands out to you about today, besides the murder?", "d3e", ["midExposure"]]
 		responseDict["r3f"] = ["No, that all checks out. Thank you for talking with me.", "0", ["nextChar"]]
 		responseDict["r3g"] = ["That all checks out. Thank you for talking with me.", "0", ["nextChar"]]
-		
+			
 		dialogueDict["d4a"] = ["Well, it speaks of rather rich tastes, doesn't it? Oh, but I do love the color everywhere. To have the time to cultivate such plants as these in the comfort of your own home. Though I'm sure Mr. Rotwell has servants for that. I would kill for this mahogany floor of his, even if I had to scrub it myself. And don't even get me started on the view. I've always wanted to live by the coast.", ["r3f"], []]
 		
 		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], []]
@@ -327,9 +329,10 @@ func _fred_speak(check):
 	f_is_speak = check
 	if check:
 		fpos.play()
-		
 	else:
 		fpos.stop()
 		fpos.frame = 0
 
-
+func _currentSpeaker(current: String):
+	if current == "dolores" || current == "fred":
+		_current_char_speaking = current

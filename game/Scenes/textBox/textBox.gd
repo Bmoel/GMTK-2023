@@ -26,6 +26,7 @@ enum State {
 var current_state = State.READY
 var text_queue = []
 var _blockingInput:bool
+var is_dialogue = false
 
 """
 /*
@@ -72,6 +73,7 @@ func _process(_delta): #change to delta if used
 				hide_textbox()
 				GlobalSignals.emit_signal("textbox_shift",false)
 				if text_queue.empty():
+					GlobalSignals.emit_signal("hide_buttons",  is_dialogue)
 					GlobalSignals.emit_signal("textbox_empty")
 					$Timer.start()
 					
@@ -102,14 +104,8 @@ func get_state() -> String:
 */
 """
 func queue_text(next_text, top_box_opt="", color_opt=""):
-	if top_box_opt != "":
-		$TopBox.show()
-		set_top_box_text(top_box_opt, color_opt)
-	else:
-		$TopBox.hide()
 	#pushes text onto queue
-	text_queue.push_back(next_text)
-	print(_topBox.bbcode_text)
+	text_queue.push_back([next_text, top_box_opt, color_opt])
 
 """
 /*
@@ -120,22 +116,9 @@ func queue_text(next_text, top_box_opt="", color_opt=""):
 */
 """
 func set_top_box_text(text_in, color_in):
-	print("got " + color_in)
 	var color_code = Global.getColorCode(color_in)
 	var mod_text = "[color=" + color_code + "]" + text_in +  "[/color]"
 	_topBox.bbcode_text = mod_text
-
-"""
-/*
-* @pre None
-* @post None
-* @param 
-* @return Returns task list
-*/
-"""
-func queue_length():
-	#return text length
-	return len(text_queue)
 
 """
 /*
@@ -175,11 +158,19 @@ func show_textbox():
 */
 """
 func display_text():
-	var next_text = text_queue.pop_front()
+	var obj = text_queue.pop_front()
+	var next_text = obj[0]
+	if obj[1] != "":
+		GlobalSignals.emit_signal("currentSpeaker", obj[1])
+		set_top_box_text(obj[1],obj[2])
+		$TopBox.show()
+	else:
+		$TopBox.hide()
 	text_box.bbcode_text = next_text
 	text_box.percent_visible = 0.0
 	show_textbox()
 	change_state(State.READING)
+	GlobalSignals.emit_signal("hide_buttons", false)
 	#Next two lines is what makes text slowly show up in textbox
 	text_displayer.interpolate_property(text_box, "percent_visible", 0.0, 1.0, len(next_text) * CHAR_READ_RATE, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	text_displayer.start()

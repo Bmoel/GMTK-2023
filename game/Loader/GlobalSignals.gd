@@ -31,3 +31,19 @@ signal typebox_submit(text)
 """
 # warning-ignore:unused_signal
 signal unselect_credits_button(value)
+
+"""
+* Purpose: To let exec know to not show buttons
+* Used in: DecisionButtons.gd
+* Params: value (boolean, true if to select)
+"""
+# warning-ignore:unused_signal
+signal hide_buttons(value)
+
+"""
+* Purpose: To let exec know to not show buttons
+* Used in: DecisionButtons.gd
+* Params: value (boolean, true if to select)
+"""
+# warning-ignore:unused_signal
+signal currentSpeaker(speaker)
