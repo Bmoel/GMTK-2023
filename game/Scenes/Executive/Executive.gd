@@ -9,8 +9,11 @@ var _currentCharID:int
 var exposureLevel:int
 var _opening_scene = preload("res://Scenes/openingScene/openingScene.tscn")
 
+var fade_in = true
 onready var blink = $Blink/AnimationPlayer
 onready var canvasVis = $Blink
+onready var bg_music = $bg
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -18,9 +21,16 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	GlobalSignals.connect("textbox_empty", self, "_playPendingDialogue")
+	init_bg()
+	init_button()
 	initializeCharacters()
 	openSequence()
 
+func _process(delta):
+	if fade_in:
+		bg_music.volume_db += 30*delta
+		if bg_music.volume_db >= -10:
+			fade_in = false
 """
 /*
 * @pre Called once to initialize Character objects
@@ -185,14 +195,13 @@ func getTrees(character:String):
 func _recenter_buttons(width:int):
 	decisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)
 
-<<<<<<< HEAD
 
 func _playPendingDialogue():
 	if _pendingDialogueKey != null:
 		var key = _pendingDialogueKey
 		_pendingDialogueKey = null
 		playDialogue(key)
-=======
+
 """
 /*
 * @pre Called during ready function
@@ -207,4 +216,38 @@ func playBlink():
 	blink.play("Blink")
 	yield(blink, "animation_finished")
 	canvasVis.visible = false
->>>>>>> beginning-scene
+
+"""
+/*
+* @pre Called during ready function
+* @post BG playing
+* @param None
+* @return None
+* Initializes the background music
+*/
+"""	
+func init_bg():
+	bg_music.volume_db = -60
+	bg_music.play()
+
+"""
+/*
+* @pre Called during ready function
+* @post buttons added to group "my_buttons"
+* @param None
+* @return None
+* Initializes the background music
+*/
+"""	
+func init_button():
+	for button in get_tree().get_nodes_in_group("my_buttons"):
+		button.connect("mouse_entered", self, "_mouse_button_entered")
+		button.connect("focus_entered", self, "_mouse_button_entered")
+		button.connect("button_down", self, "_button_down")
+		
+		
+func _mouse_button_entered():
+	$click.play()
+func _button_down():
+	$button_down.play()
+
