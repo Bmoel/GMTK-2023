@@ -7,7 +7,7 @@ var _charID
 var _dialogueTree
 var _responseTree
 var _artPath
-onready var _position = $Position2D
+
 
 
 # Called when the node enters the scene tree for the first time.

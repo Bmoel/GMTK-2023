@@ -7,6 +7,8 @@ onready var _pendingDialogueKey = null
 var _characters = []
 var _currentCharID:int
 var exposureLevel:int
+var dpos
+var fpos
 
 var fade_in = true
 onready var blink = $Blink/AnimationPlayer
@@ -23,7 +25,6 @@ func _ready():
 	init_bg()
 	init_button()
 	initializeCharacters()
-	playBlink()
 	playGame()
 
 func _process(delta):
@@ -56,11 +57,18 @@ func initializeCharacters():
 	fred._dialogueTree = trees[0]
 	fred._responseTree = trees[1]
 
-
 	_characters.append(dolores)
 	_characters.append(fred)
+
 	add_child(dolores)
 	add_child(fred)
+	dpos = dolores.get_node("CanvasLayer").get_node("AnimatedSprite")
+	fpos = fred.get_node("CanvasLayer").get_node("AnimatedSprite")
+	dpos.frame = 0
+	fpos.frame = 2
+	dpos.position = Vector2(-500,500)
+	fpos.position = Vector2(2400,500)
+	
 
 
 """
@@ -75,9 +83,8 @@ func initializeCharacters():
 func playGame():
 	playBlink()
 	_currentCharID = 0
-	for id in range(0, len(_characters)):
-		slideCharacter("left", id)
-		playDialogue("d1a")
+	slideCharacter()
+	playDialogue("d1a")
 
 """
 /*
@@ -88,12 +95,13 @@ func playGame():
 * @return None
 */
 """			
-func slideCharacter(direction:String, characterID:int):
-	var tween = get_tree().create_tween()	
-	if direction == "left":
-		tween.tween_property(_characters[characterID], "position", Vector2(100,500), 0.75)
-	elif direction == "right":
-		tween.tween_property(_characters[characterID], "position", Vector2(1000,500), 0.75)
+func slideCharacter():
+	var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	var tween2 := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.tween_property(dpos, "position", Vector2(300,500), 5)
+	tween2.tween_property(fpos, "position", Vector2(1600,500), 5)
+
+
 
 
 """
