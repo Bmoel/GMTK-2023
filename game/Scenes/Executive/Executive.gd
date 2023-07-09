@@ -7,7 +7,11 @@ onready var _pendingDialogueKey = null
 var _characters = []
 var _currentCharID:int
 var exposureLevel:int
+var dpos
+var fpos
 
+var d_is_speak = false
+var f_is_speak = false
 var fade_in = true
 onready var blink = $Blink/AnimationPlayer
 onready var canvasVis = $Blink
@@ -21,7 +25,6 @@ func _ready():
 	init_bg()
 	init_button()
 	initializeCharacters()
-	playBlink()
 	playGame()
 
 func _process(delta):
@@ -29,6 +32,14 @@ func _process(delta):
 		bg_music.volume_db += 30*delta
 		if bg_music.volume_db >= -10:
 			fade_in = false
+	if d_is_speak:
+		pass
+	else:
+		pass
+	if f_is_speak:
+		pass
+	else:
+		pass
 """
 /*
 * @pre Called once to initialize Character objects
@@ -39,16 +50,36 @@ func _process(delta):
 """	
 func initializeCharacters():
 	var dolores = load("res://Scenes/Character/Character.tscn").instance()
+	var fred = load("res://Scenes/Character/Character.tscn").instance()
 	dolores._charName = "dolores"
 	dolores._charColor = "blue"
 	dolores._charID = 0
+	fred._charName = "fred"
+	fred._charColor = "red"
+	fred._charID = 1
 	var trees = getTrees("dolores")
 	dolores._dialogueTree = trees[0]
 	dolores._responseTree = trees[1]
-	dolores._artPath = "res://Assets/Sprites/DolorsSplash.png"
-	dolores.rect_position.x -= 150
+	
+	var trees2 = getTrees("fred")
+	fred._dialogueTree = trees[0]
+	fred._responseTree = trees[1]
+
 	_characters.append(dolores)
+	_characters.append(fred)
+
 	add_child(dolores)
+	add_child(fred)
+	dpos = dolores.get_node("CanvasLayer").get_node("woman")
+	dolores.get_node("CanvasLayer").get_node("man").visible = false
+	fpos = fred.get_node("CanvasLayer").get_node("man")
+	fred.get_node("CanvasLayer").get_node("woman").visible = false
+	dpos.frame = 0
+	fpos.frame = 0
+	dpos.position = Vector2(-500,500)
+	fpos.position = Vector2(2400,500)
+	
+
 
 """
 /*
@@ -62,7 +93,7 @@ func initializeCharacters():
 func playGame():
 	playBlink()
 	_currentCharID = 0
-	slideCharacter("left", _currentCharID)
+	slideCharacter()
 	playDialogue("d1a")
 
 """
@@ -74,12 +105,13 @@ func playGame():
 * @return None
 */
 """			
-func slideCharacter(direction:String, characterID:int):
-	var tween = get_tree().create_tween()	
-	if direction == "left":
-		tween.tween_property(_characters[characterID], "rect_position", Vector2(0,0), 0.75)
-	elif direction == "right":
-		tween.tween_property(_characters[characterID], "rect_position", Vector2(1850,0), 0.75)
+func slideCharacter():
+	var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	var tween2 := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.tween_property(dpos, "position", Vector2(300,500), 5)
+	tween2.tween_property(fpos, "position", Vector2(1600,500), 5)
+
+
 
 
 """
@@ -270,3 +302,18 @@ func _mouse_button_entered():
 func _button_down():
 	$button_down.play()
 
+func _dolores_speak(check):
+	if check:
+		dpos.play()
+		
+	else:
+		dpos.stop()
+		dpos.frame = 0
+
+func _fred_speak(check):
+	if check:
+		fpos.play()
+		
+	else:
+		fpos.stop()
+		fpos.frame = 0

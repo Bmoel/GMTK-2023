@@ -213,6 +213,7 @@ script = ExtResource( 1 )
 environment = SubResource( 13 )
 
 [node name="ButtonLayer" type="CanvasLayer" parent="."]
+layer = 3
 
 [node name="background" type="Sprite" parent="ButtonLayer"]
 position = Vector2( 960, 536 )
@@ -299,6 +300,7 @@ custom_fonts/font = SubResource( 18 )
 text = "Exposure"
 
 [node name="textBox" parent="." instance=ExtResource( 4 )]
+layer = 6
 
 [node name="Blink" type="CanvasLayer" parent="."]
 layer = 128
