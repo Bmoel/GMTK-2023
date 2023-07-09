@@ -1,12 +1,17 @@
 extends Control
 
 onready var _buttons = $ButtonLayer/DecisionButtons
+onready var decisionButtons = $ButtonLayer/DecisionButtons
+onready var _pendingDialogueKey = null
 
 var _characters = []
 var _currentCharID:int
-onready var _pendingDialogueKey = null
-onready var decisionButtons = $ButtonLayer/DecisionButtons
 var exposureLevel:int
+var _opening_scene = preload("res://Scenes/openingScene/openingScene.tscn")
+
+onready var blink = $Blink/AnimationPlayer
+onready var canvasVis = $Blink
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,7 +19,7 @@ func _ready():
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	GlobalSignals.connect("textbox_empty", self, "_playPendingDialogue")
 	initializeCharacters()
-	playGame()
+	openSequence()
 
 """
 /*
@@ -47,7 +52,7 @@ func initializeCharacters():
 */
 """		
 func playGame():
-	openSequence()
+	playBlink()
 	_currentCharID = 0
 	for id in range(0, len(_characters)):
 		slideCharacter("left", id)
@@ -62,7 +67,11 @@ func playGame():
 */
 """		
 func openSequence():
-	pass
+	_buttons.hide()
+	var op_scene:Popup = _opening_scene.instance()
+	$ButtonLayer.add_child(op_scene)
+	op_scene.connect("openingDone", self, "playGame")
+	op_scene.popup_centered()
 
 """
 /*
@@ -176,9 +185,26 @@ func getTrees(character:String):
 func _recenter_buttons(width:int):
 	decisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)
 
+<<<<<<< HEAD
 
 func _playPendingDialogue():
 	if _pendingDialogueKey != null:
 		var key = _pendingDialogueKey
 		_pendingDialogueKey = null
 		playDialogue(key)
+=======
+"""
+/*
+* @pre Called during ready function
+* @post None
+* @param None
+* @return None
+* Plays blink anim
+*/
+"""	
+func playBlink():
+	canvasVis.visible = true
+	blink.play("Blink")
+	yield(blink, "animation_finished")
+	canvasVis.visible = false
+>>>>>>> beginning-scene

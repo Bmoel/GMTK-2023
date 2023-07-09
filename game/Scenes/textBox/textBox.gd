@@ -165,7 +165,6 @@ func show_textbox():
 	#show both the scene and text container
 	show()
 	textbox_container.show()
-	$TopBox.show()
 
 """
 /*

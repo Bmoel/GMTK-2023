@@ -110,6 +110,7 @@ custom_styles/panel = SubResource( 8 )
 [node name="Label" type="RichTextLabel" parent="TopBox"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 12.0
 custom_fonts/normal_font = SubResource( 9 )
 bbcode_enabled = true
 scroll_active = false
