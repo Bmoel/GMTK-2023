@@ -13,8 +13,6 @@ onready var blink = $Blink/AnimationPlayer
 onready var canvasVis = $Blink
 onready var bg_music = $bg
 
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
