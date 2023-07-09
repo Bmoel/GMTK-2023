@@ -20,7 +20,7 @@ func _ready():
 func _on_Start_pressed():
 	bg_music.stop()
 	# warning-ignore:return_value_discarded
-	get_tree().change_scene("res://Scenes/Executive/Executive.tscn")
+	get_tree().change_scene("res://Scenes/openingScene/openingScene.tscn")
 
 func _on_Options_pressed():
 	var new_opt:Popup = _options_scene.instance()

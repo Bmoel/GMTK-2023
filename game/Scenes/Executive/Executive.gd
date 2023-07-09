@@ -7,7 +7,6 @@ onready var _pendingDialogueKey = null
 var _characters = []
 var _currentCharID:int
 var exposureLevel:int
-var _opening_scene = preload("res://Scenes/openingScene/openingScene.tscn")
 
 var fade_in = true
 onready var blink = $Blink/AnimationPlayer
@@ -24,7 +23,8 @@ func _ready():
 	init_bg()
 	init_button()
 	initializeCharacters()
-	openSequence()
+	playBlink()
+	playGame()
 
 func _process(delta):
 	if fade_in:
@@ -67,21 +67,6 @@ func playGame():
 	for id in range(0, len(_characters)):
 		slideCharacter("left", id)
 		playDialogue("d1a")
-
-"""
-/*
-* @pre Called once to set stage for gameplay
-* @post Opening exposition is played cinematic-style
-* @param None
-* @return None
-*/
-"""		
-func openSequence():
-	_buttons.hide()
-	var op_scene:Popup = _opening_scene.instance()
-	$ButtonLayer.add_child(op_scene)
-	op_scene.connect("openingDone", self, "playGame")
-	op_scene.popup_centered()
 
 """
 /*
