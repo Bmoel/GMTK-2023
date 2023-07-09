@@ -4,7 +4,9 @@ onready var textbox = $textBox
 
 var dialogue = [
 	"The aliens have determined that you are not who you say you are",
-	"The punishment is death, goodbye"
+	"Your moves throughout the game have been suboptimal, maybe a different approach is required",
+	"But for now, your time in here has come to a close",
+	"Good luck out there"
 ]
 
 func _ready():
@@ -26,6 +28,3 @@ func _on_MainMenu_pressed():
 
 func _on_Exit_pressed():
 	get_tree().quit()
-
-
-

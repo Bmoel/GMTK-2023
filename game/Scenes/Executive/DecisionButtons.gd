@@ -78,6 +78,7 @@ func show_button(button_num: int):
 func _on_b1_pressed() -> void:
 	var executive = get_parent().get_parent()
 	if not executive.get_node("textBox")._blockingInput:
+		buttonVisibility(false)
 		var responseKey = _responseKeys[0]
 		executive.playResponse(responseKey)
 
@@ -85,6 +86,7 @@ func _on_b1_pressed() -> void:
 func _on_b2_pressed() -> void:
 	var executive = get_parent().get_parent()
 	if not executive.get_node("textBox")._blockingInput:
+		buttonVisibility(false)
 		var responseKey = _responseKeys[1]
 		executive.playResponse(responseKey)
 
@@ -92,6 +94,7 @@ func _on_b2_pressed() -> void:
 func _on_b3_pressed() -> void:
 	var executive = get_parent().get_parent()
 	if not executive.get_node("textBox")._blockingInput:
+		buttonVisibility(false)
 		var responseKey = _responseKeys[2]
 		executive.playResponse(responseKey)
 
@@ -99,5 +102,6 @@ func _on_b3_pressed() -> void:
 func _on_b4_pressed() -> void:
 	var executive = get_parent().get_parent()
 	if not executive.get_node("textBox")._blockingInput:
+		buttonVisibility(false)
 		var responseKey = _responseKeys[3]
 		executive.playResponse(responseKey)

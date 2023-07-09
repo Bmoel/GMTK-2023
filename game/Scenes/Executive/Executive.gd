@@ -185,7 +185,7 @@ func getTrees(character:String):
 		responseDict["r3d"] = ["What were your first impressions of Mr. Martin?", "d3d", []]
 		responseDict["r3e"] = ["And nothing stands out to you about today, besides the murder?", "d3e", ["midExposure"]]
 		responseDict["r3f"] = ["No, that all checks out. Thank you for talking with me.", "0", ["nextChar"]]
-		responseDict["r3f"] = ["That all checks out. Thank you for talking with me.", "0", ["nextChar"]]
+		responseDict["r3g"] = ["That all checks out. Thank you for talking with me.", "0", ["nextChar"]]
 		
 		dialogueDict["d4a"] = ["Well, it speaks of rather rich tastes, doesn't it? Oh, but I do love the color everywhere. To have the time to cultivate such plants as these in the comfort of your own home. Though I'm sure Mr. Rotwell has servants for that. I would kill for this mahogany floor of his, even if I had to scrub it myself. And don't even get me started on the view. I've always wanted to live by the coast.", ["r3f"], []]
 		
@@ -244,8 +244,7 @@ func init_button():
 		button.connect("mouse_entered", self, "_mouse_button_entered")
 		button.connect("focus_entered", self, "_mouse_button_entered")
 		button.connect("button_down", self, "_button_down")
-		
-		
+
 func _mouse_button_entered():
 	$click.play()
 func _button_down():
