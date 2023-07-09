@@ -41,16 +41,27 @@ func _process(delta):
 """	
 func initializeCharacters():
 	var dolores = load("res://Scenes/Character/Character.tscn").instance()
+	var fred = load("res://Scenes/Character/Character.tscn").instance()
 	dolores._charName = "dolores"
 	dolores._charColor = "blue"
 	dolores._charID = 0
+	fred._charName = "fred"
+	fred._charColor = "red"
+	fred._charID = 1
 	var trees = getTrees("dolores")
 	dolores._dialogueTree = trees[0]
 	dolores._responseTree = trees[1]
-	dolores._artPath = "res://Assets/Sprites/DolorsSplash.png"
-	dolores.rect_position.x -= 150
+	
+	var trees2 = getTrees("fred")
+	fred._dialogueTree = trees[0]
+	fred._responseTree = trees[1]
+
+
 	_characters.append(dolores)
+	_characters.append(fred)
 	add_child(dolores)
+	add_child(fred)
+
 
 """
 /*
@@ -80,9 +91,9 @@ func playGame():
 func slideCharacter(direction:String, characterID:int):
 	var tween = get_tree().create_tween()	
 	if direction == "left":
-		tween.tween_property(_characters[characterID], "rect_position", Vector2(0,0), 0.75)
+		tween.tween_property(_characters[characterID], "position", Vector2(100,500), 0.75)
 	elif direction == "right":
-		tween.tween_property(_characters[characterID], "rect_position", Vector2(1850,0), 0.75)
+		tween.tween_property(_characters[characterID], "position", Vector2(1000,500), 0.75)
 
 
 """

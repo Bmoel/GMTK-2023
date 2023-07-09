@@ -226,6 +226,7 @@ script = ExtResource( 1 )
 environment = SubResource( 13 )
 
 [node name="ButtonLayer" type="CanvasLayer" parent="."]
+layer = 3
 
 [node name="background" type="Sprite" parent="ButtonLayer"]
 position = Vector2( 960, 544 )
@@ -305,6 +306,7 @@ custom_fonts/font = SubResource( 16 )
 custom_styles/fg = SubResource( 17 )
 
 [node name="textBox" parent="." instance=ExtResource( 4 )]
+layer = 6
 
 [node name="Blink" type="CanvasLayer" parent="."]
 layer = 128
@@ -320,14 +322,6 @@ color = Color( 0, 0, 0, 1 )
 root_node = NodePath("../Black")
 anims/Blink = SubResource( 14 )
 anims/RESET = SubResource( 15 )
-
-[node name="ProgressBar" type="ProgressBar" parent="."]
-margin_left = 1316.0
-margin_top = 44.0
-margin_right = 1877.0
-margin_bottom = 98.0
-custom_fonts/font = SubResource( 16 )
-custom_styles/fg = SubResource( 17 )
 
 [node name="bg" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
