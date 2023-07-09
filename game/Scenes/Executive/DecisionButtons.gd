@@ -22,7 +22,7 @@ func _updateButtons() -> void:
 		newTexts.append(responseString)
 	for i in range(numButtons + 1, 5):
 		newTexts.append("")
-		hide_button(i + 1)
+		hide_button(i)
 	changeButtonTexts(newTexts)	
 
 #Changes all internal texts of buttons
