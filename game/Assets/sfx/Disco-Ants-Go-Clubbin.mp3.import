@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Disco-Ants-Go-Clubbin.mp3-5b195ee5bc4b57901c69749f31fb0337.mp3str"
+
+[deps]
+
+source_file="res://Assets/sfx/Disco-Ants-Go-Clubbin.mp3"
+dest_files=[ "res://.import/Disco-Ants-Go-Clubbin.mp3-5b195ee5bc4b57901c69749f31fb0337.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

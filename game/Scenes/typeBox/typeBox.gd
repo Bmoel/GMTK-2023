@@ -10,7 +10,15 @@ func _ready() -> void:
 
 #Called whenever keyboard/mouse event happens
 func _input(event) -> void:
+	var stripped_name = text_input.text.strip_edges()
 	var can_submit:bool = (text_input.text.strip_edges() != "")
+	if len(stripped_name) > 20:
+		set_topBox("Name too long", "blue")
+		return
+	elif len(stripped_name) > 0:
+		set_topBox("Enter to submit", "blue")
+	else:
+		set_topBox("What's your name?", "blue")
 	if event.is_action_pressed("Enter") and can_submit:
 		GlobalSignals.emit_signal("typebox_submit",text_input.text)
 		queue_free()

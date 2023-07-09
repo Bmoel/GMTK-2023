@@ -8,7 +8,6 @@ size = 42
 font_data = ExtResource( 2 )
 
 [node name="Credits" type="Popup"]
-visible = true
 margin_right = 1500.0
 margin_bottom = 800.0
 script = ExtResource( 1 )
@@ -35,16 +34,12 @@ Author: Poppy Works, Wolfgang Wozniak
 Major Contributors: Itou Hiro (PixelMPlus), leedheo (DOSGothic), ぶち
 https://poppyworks.itch.io/silver
 ------------------------------------------------------------------------------------------------------------------
-
-[color=#eb1337]Art[/color]
-------------------------------------------------------------------------------------------------------------------
-Made by us
 [color=#2f783c]Music[/color]
 ------------------------------------------------------------------------------------------------------------------
-Made by us
-[color=#cf8f0e]SFX[/color]
-------------------------------------------------------------------------------------------------------------------
-Made by us
+\"Blob Monsters Return\" <- Good Ending music
+\"Disco Ants Go Clubbing\" <- Inconclusive Ending music
+by Eric Matyas
+www.soundimage.org
 ------------------------------------------------------------------------------------------------------------------"
 text = "Fonts
 ------------------------------------------------------------------------------------------------------------------
@@ -53,16 +48,12 @@ Author: Poppy Works, Wolfgang Wozniak
 Major Contributors: Itou Hiro (PixelMPlus), leedheo (DOSGothic), ぶち
 https://poppyworks.itch.io/silver
 ------------------------------------------------------------------------------------------------------------------
-
-Art
-------------------------------------------------------------------------------------------------------------------
-Made by us
 Music
 ------------------------------------------------------------------------------------------------------------------
-Made by us
-SFX
-------------------------------------------------------------------------------------------------------------------
-Made by us
+\"Blob Monsters Return\" <- Good Ending music
+\"Disco Ants Go Clubbing\" <- Inconclusive Ending music
+by Eric Matyas
+www.soundimage.org
 ------------------------------------------------------------------------------------------------------------------"
 
 [connection signal="popup_hide" from="." to="." method="_on_Credits_popup_hide"]

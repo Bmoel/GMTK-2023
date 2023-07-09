@@ -19,16 +19,18 @@ onready var bg_music = $bg
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	set_process(false)
 	# warning-ignore:return_value_discarded
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	# warning-ignore:return_value_discarded
 	GlobalSignals.connect("textbox_empty", self, "_playPendingDialogue")
 	# warning-ignore:return_value_discarded
 	GlobalSignals.connect("currentSpeaker", self, "_currentSpeaker")
+	$ButtonLayer/DecisionButtons.buttonVisibility(false)
 	init_bg()
 	init_button()
 	initializeCharacters()
-	playGame()
+	playBlink() #will go to playGame() after animation ends
 
 func _process(delta):
 	if fade_in:
@@ -77,14 +79,14 @@ func initializeCharacters():
 	dolores._responseTree = trees[1]
 	
 	var trees2 = getTrees("fred")
-	fred._dialogueTree = trees[0]
-	fred._responseTree = trees[1]
+	fred._dialogueTree = trees2[0]
+	fred._responseTree = trees2[1]
 
 	_characters.append(dolores)
 	_characters.append(fred)
 
-	add_child(dolores)
-	add_child(fred)
+	$ButtonLayer.add_child(dolores)
+	$ButtonLayer.add_child(fred)
 	dpos = dolores.get_node("CanvasLayer").get_node("woman")
 	dolores.get_node("CanvasLayer").get_node("man").visible = false
 	fpos = fred.get_node("CanvasLayer").get_node("man")
@@ -106,9 +108,9 @@ func initializeCharacters():
 */
 """		
 func playGame():
-	playBlink()
+	set_process(true)
 	_currentCharID = 0
-	slideCharacter()
+	slideCharacter("dolores")
 	playDialogue("d1a")
 
 """
@@ -120,14 +122,15 @@ func playGame():
 * @return None
 */
 """			
-func slideCharacter():
-	var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	var tween2 := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	tween.tween_property(dpos, "position", Vector2(300,650), 5)
-	tween2.tween_property(fpos, "position", Vector2(1600,600), 5)
-
-
-
+func slideCharacter(character: String):
+	if character == "dolores":
+		var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+		# warning-ignore:return_value_discarded
+		tween.tween_property(dpos, "position", Vector2(300,650), 5)
+	elif character == "fred":
+		var tween2 := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+		# warning-ignore:return_value_discarded
+		tween2.tween_property(fpos, "position", Vector2(1600,600), 5)
 
 """
 /*
@@ -144,8 +147,6 @@ func playDialogue(dialogueKey):
 	var dialogueString = dialogueContainer[0]
 	var responseKeys = dialogueContainer[1]
 	var actionKeys = dialogueContainer[2]
-	if len(dialogueString) > 60:
-		decisionButtons.changeButtonWidths(2)
 	$textBox.queue_text(dialogueString, _characters[_currentCharID]._charName, _characters[_currentCharID]._charColor)
 	$textBox.is_dialogue = true
 	decisionButtons._responseKeys = []
@@ -166,7 +167,7 @@ func playResponse(responseKey):
 	var responseString = responseContainer[0]
 	var dialogueKey = responseContainer[1]
 	var actionKeys = responseContainer[2]
-	$textBox.queue_text(responseString)
+	$textBox.queue_text(responseString, Global.getPlayerName(), "orange")
 	$textBox.is_dialogue = false
 	for key in actionKeys:
 		playAction(key)
@@ -187,10 +188,15 @@ func playAction(actionKey):
 		raiseExposure(10)
 	elif actionKey == "nextChar":
 		_currentCharID = 1
+		slideCharacter("fred")
 		playDialogue("d1a")
 	elif actionKey == "goodEnding":
-		print("You wake up the next morning with no memory of the previous night's experience, except for in a vague notion of having narrowly avoided a grisly fate.")
-		
+		# warning-ignore:return_value_discarded
+		get_tree().change_scene("res://Scenes/goodEnding/goodEnding.tscn")
+	elif actionKey == "inconclusive":
+		# warning-ignore:return_value_discarded
+		get_tree().change_scene("res://Scenes/InconclusiveEnding/InconclusiveEnd.tscn")
+
 func raiseExposure(level:int):
 	$ButtonLayer/AwareMeter.updateExposure(level)
 
@@ -222,7 +228,7 @@ func getTrees(character:String):
 		responseDict["r2c"] = ["But you might have seen something.", "d3c", ["midExposure"]]
 		responseDict["r2d"] = ["Well, what were your first impressions of him?", "d3d", []]
 		responseDict["r2e"] = ["And nothing stands out to you about today, besides the murder?", "d3e", ["midExposure"]]
-		responseDict["r2f"] = ["No, that all checks out. Thank you for talking with me.", "0", ["nextChar"]]
+		responseDict["r2f"] = ["No, that all checks out, thanks. Is someone else there?", "d1a", ["nextChar"]]
 		
 		dialogueDict["d3a"] = ["What are you talking about? We were enjoying a nice dinner together, you know, polite chit-chat before our host arrived, nothing serious, when suddenly Mr. ... Martin here was STABBED. Is this ringing a bell? Are you suffering from shock?", ["r3a", "r3b"], []]
 		dialogueDict["d3b"] = ["Well ... it's the home of my ... associate. Mr. Franklin Devino Rotwell. He invited me to this gorgeous mansion of his to discuss a business proposition. When I arrived I found several strangers: you, Mr. Arcwright, and Mr. ... Martin, God rest his soul waiting. It was to be a joint proposition, was my thinking. Now I don't know what to think.", ["r3c", "r3d"], []]
@@ -235,13 +241,13 @@ func getTrees(character:String):
 		responseDict["r3c"] = ["Just because of the murder? Or is there something besides that?", "d3e", ["midExposure"]]
 		responseDict["r3d"] = ["What were your first impressions of Mr. Martin?", "d3d", []]
 		responseDict["r3e"] = ["And nothing stands out to you about today, besides the murder?", "d3e", ["midExposure"]]
-		responseDict["r3f"] = ["No, that all checks out. Thank you for talking with me.", "0", ["nextChar"]]
-		responseDict["r3g"] = ["That all checks out. Thank you for talking with me.", "0", ["nextChar"]]
+		responseDict["r3f"] = ["Oh really that's nice. Wait who else is there?", "d1a", ["nextChar"]]
+		responseDict["r3g"] = ["No, that all checks out, thanks. Is someone else there?", "d1a", ["nextChar"]]
 			
 		dialogueDict["d4a"] = ["Well, it speaks of rather rich tastes, doesn't it? Oh, but I do love the color everywhere. To have the time to cultivate such plants as these in the comfort of your own home. Though I'm sure Mr. Rotwell has servants for that. I would kill for this mahogany floor of his, even if I had to scrub it myself. And don't even get me started on the view. I've always wanted to live by the coast.", ["r3f"], []]
 		
-		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], []]
-		responseDict["0"] = ["END OF RESPONSES REACHED", "0", []]
+		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], ["inconclusive"]]
+		responseDict["0"] = ["END OF RESPONSES REACHED", "0", ["inconclusive"]]
 	elif character == "fred":
 		dialogueDict["d1a"] = ["Interesting night we're having, eh?", ["r1a", "r1b", "r1c"], []]
 		
@@ -249,17 +255,18 @@ func getTrees(character:String):
 		responseDict["r1b"] = ["More interesting than I've seen, even as a detective.", "d2b", ["midExposure"]]
 		responseDict["r1c"] = ["There's something here some of us aren't seeing. Is that right?", "d2c", ["highExposure"]]
 		
-		dialogueDict["d2a"] = ["Well, you're welcome to your opinion. It's all business at the end of the day. At least until someone gets murdered. I find it interesting that you're here at all detective. Then again, this whole situation is ... interesting. After all, regardless of whether one of us three is guilty ... somebody has to have pulled the lights.", ["0"], []]
+		dialogueDict["d2a"] = ["Well, you're welcome to your opinion. It's all business at the end of the day. At least until someone gets murdered. I find it interesting that you're here at all detective. Then again, this whole situation is ... interesting. After all, regardless of whether one of us three is guilty ... somebody has to have pulled the lights.", ["0"], ["inconclusive"]]
 		dialogueDict["d2b"] = ["Well detective, what's your diagnosis?", ["r2b"], []]
-		dialogueDict["d2b"] = ["I do believe you're onto something. What's your diagnosis?", ["r2b"], []]
+		dialogueDict["d2c"] = ["I do believe you're onto something. What's your diagnosis?", ["r2b"], []]
 		
 		responseDict["r2b"] = ["I think that we should finish our dinner. Forget the murder. And go home. If we can find our way.", "d2a", ["goodEnding"]]
 		
-		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], []]
-		responseDict["0"] = ["END OF RESPONSES REACHED", "0", []]
+		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], ["inconclusive"]]
+		responseDict["0"] = ["END OF RESPONSES REACHED", "0", ["inconclusive"]]
 	return [dialogueDict, responseDict]
 
 func _recenter_buttons(width:int):
+	# warning-ignore:integer_division
 	decisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)
 
 func _playPendingDialogue():
@@ -316,18 +323,20 @@ func _mouse_button_entered():
 func _button_down():
 	$button_down.play()
 
-
 func _currentSpeaker(current: String):
-	if current == "dolores" || current == "fred":
+	if current == "dolores" || current == "fred" || current == Global.getPlayerName():
 		_current_char_speaking = current
 		if _current_char_speaking == "dolores":
 			dpos.play()
 		else:
 			dpos.stop()
 			dpos.frame = 0
-
 		if _current_char_speaking == "fred":
 			fpos.play()
 		else:
 			fpos.stop()
 			fpos.frame = 0
+
+
+func _on_AnimationPlayer_animation_finished(_anim_name):
+	playGame()

@@ -24,7 +24,7 @@ func getColorCode(color:String) -> String:
 	return code
 
 func setPlayerName(value: String) -> void:
-	player_name = value.strip_edges()
+	player_name = value.strip_edges().to_lower()
 
 func getPlayerName() -> String:
 	return player_name
