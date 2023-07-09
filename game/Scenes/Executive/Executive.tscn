@@ -92,6 +92,27 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color( 0, 0, 0, 1 )
 
+[sub_resource type="DynamicFont" id=16]
+size = 48
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_top = 5
+extra_spacing_bottom = -5
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=17]
+bg_color = Color( 0.784314, 0.215686, 0.215686, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.317647, 0.317647, 0.317647, 0 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+anti_aliasing_size = 0.396
+
 [sub_resource type="Animation" id=14]
 resource_name = "Blink"
 length = 3.2
@@ -196,27 +217,6 @@ tracks/3/keys = {
 "values": [ 0.01 ]
 }
 
-[sub_resource type="DynamicFont" id=16]
-size = 48
-outline_size = 1
-outline_color = Color( 0, 0, 0, 1 )
-extra_spacing_top = 5
-extra_spacing_bottom = -5
-font_data = ExtResource( 3 )
-
-[sub_resource type="StyleBoxFlat" id=17]
-bg_color = Color( 0.784314, 0.215686, 0.215686, 1 )
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color( 0.317647, 0.317647, 0.317647, 0 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-anti_aliasing_size = 0.396
-
 [node name="Executive" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -295,6 +295,14 @@ custom_fonts/font = SubResource( 4 )
 custom_styles/hover = SubResource( 12 )
 custom_styles/normal = SubResource( 8 )
 text = "Option 4"
+
+[node name="ProgressBar" type="ProgressBar" parent="ButtonLayer"]
+margin_left = 1316.0
+margin_top = 44.0
+margin_right = 1877.0
+margin_bottom = 98.0
+custom_fonts/font = SubResource( 16 )
+custom_styles/fg = SubResource( 17 )
 
 [node name="textBox" parent="." instance=ExtResource( 4 )]
 

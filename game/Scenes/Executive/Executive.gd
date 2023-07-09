@@ -195,7 +195,6 @@ func getTrees(character:String):
 func _recenter_buttons(width:int):
 	decisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)
 
-
 func _playPendingDialogue():
 	if _pendingDialogueKey != null:
 		var key = _pendingDialogueKey
