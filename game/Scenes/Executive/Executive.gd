@@ -4,13 +4,15 @@ onready var _buttons = $ButtonLayer/DecisionButtons
 
 var _characters = []
 var _currentCharID:int
-var _pendingDialogueKey:String
+onready var _pendingDialogueKey = null
 onready var decisionButtons = $ButtonLayer/DecisionButtons
+var exposureLevel:int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
+	GlobalSignals.connect("textbox_empty", self, "_playPendingDialogue")
 	initializeCharacters()
 	playGame()
 
@@ -94,6 +96,8 @@ func playDialogue(dialogueKey):
 	var dialogueString = dialogueContainer[0]
 	var responseKeys = dialogueContainer[1]
 	var actionKeys = dialogueContainer[2]
+	if len(dialogueString) > 60:
+		decisionButtons.changeButtonWidths(2)
 	$textBox.queue_text(dialogueString, _characters[_currentCharID]._charName, _characters[_currentCharID]._charColor)
 	decisionButtons._responseKeys = []
 	decisionButtons._responseStrings = []
@@ -113,11 +117,11 @@ func playResponse(responseKey):
 	var responseString = responseContainer[0]
 	var dialogueKey = responseContainer[1]
 	var actionKeys = responseContainer[2]
-	$textBox.queue_text(responseString, "ME", "red")
+	$textBox.queue_text(responseString, "Me", "red")
 	for key in actionKeys:
 		playAction(key)
-	playDialogue(dialogueKey)
-
+	_pendingDialogueKey = dialogueKey
+	
 """
 /*
 * @pre Called whenever dialogue or responses have an associated action
@@ -127,7 +131,15 @@ func playResponse(responseKey):
 */
 """		
 func playAction(actionKey):
-	pass
+	if actionKey == "midExposure":
+		raiseExposure(5)
+	if actionKey == "highExposure":
+		raiseExposure(10)
+		
+func raiseExposure(level:int):
+	exposureLevel += level
+	if exposureLevel > 30:
+		print("You died!")
 
 """
 /*
@@ -143,15 +155,30 @@ func getTrees(character:String):
 	var responseDict = {}
 	if character == "dolores":
 		dialogueDict["d1a"] = ["I don't know what you think you're going to get out of me. I already told you, I never met the guy.", ["r1a", "r1b", "r1c"], []]
-		responseDict["r1a"] = ["Wait, what? Where am I?", "d2a", []]
-		responseDict["r1b"] = ["What guy?", "d2b", []]
+		responseDict["r1a"] = ["Wait, what? Where am I?", "d2a", ["highExposure"]]
+		responseDict["r1b"] = ["What guy?", "d2b", ["midExposure"]]
 		responseDict["r1c"] = ["Why don't you go ahead and tell it again.", "d2c", []]
 		dialogueDict["d2a"] = ["Hello? What do you mean? You said you were a detective?", ["r2a", "r2b"], []]
-		dialogueDict["d2b"] = ["The murder victim. I told you I'd never met him before. Why are you interrogating me?", ["r2c", "r2d"], []]
-		dialogueDict["d2c"] = ["Ugh. You could just take notes, you know. But fine. I was ... (TBC)", ["r2e", "r2f"], []]
-		responseDict["r2a"] = ["I'm not a detective. Where the hell am I? Who are you?", "d3a", []]
+		dialogueDict["d2b"] = ["The murder victim. I told you I'd never met him before tonight. Why are you interrogating me?", ["r2c", "r2d"], []]
+		dialogueDict["d2c"] = ["Ugh. You could just take notes, you know. But fine. I thought he seemed a rather boring fellow. Going on and on about Nascar, or whatever those racecars are they have in Europe. You must have thought so too. Then the lights went out, and I heard that awful shriek. I screamed too, you know. And when the lights came back on I was still seated exactly where I had been. This same seat. Did I miss anything?", ["r2e", "r2f"], []]
+		responseDict["r2a"] = ["I'm not a detective. Where the hell am I? Is that the moon out the window?", "d3a", ["highExposure"]]
 		responseDict["r2b"] = ["I mean from your perspective, where am I? What does this place mean to you? Why are you here?", "d3b", []]
+		responseDict["r2c"] = ["But you might have seen something.", "d3c", ["midExposure"]]
+		responseDict["r2d"] = ["Well, what were your first impressions of him?", "d3d", []]
+		dialogueDict["d3a"] = ["What are you talking about? We were enjoying a nice dinner together, you know, polite chit-chat before our host arrived, nothing serious, when suddenly Mr. ... Martin here was STABBED. Is this ringing a bell? Are you suffering from shock?", ["0"], []]
+		dialogueDict["d3b"] = ["Well ... it's the home of my ... associate. Mr. Franklin Devino Rotwell. He invited me to this gorgeous mansion of his to discuss a business proposition. When I arrived I found several strangers: you, Mr. Arcwright, and Mr. ... Martin, God rest his soul waiting. It was to be a joint proposition, was my thinking. Now I don't know what to think.", ["0"], []]
+		dialogueDict["d3c"] = ["It was pitch black. Do you mistake me for a rabbit?", ["0"], []]
+		dialogueDict["d3d"] = ["I thought he seemed a rather boring fellow. Going on and on about Nascar, or whatever those racecars are they have in Europe. Still, he hardly deserved to be STABBED for that! He seemed a nice enough guy.", ["0"], []]
+		dialogueDict["0"] = ["END OF DIALOGUE REACHED", ["0"], []]
+		responseDict["0"] = ["END OF RESPONSES REACHED", "0", []]
 	return [dialogueDict, responseDict]
 
 func _recenter_buttons(width:int):
 	decisionButtons.rect_position.x = get_viewport_rect().size.x / 2 - (width/2)
+
+
+func _playPendingDialogue():
+	if _pendingDialogueKey != null:
+		var key = _pendingDialogueKey
+		_pendingDialogueKey = null
+		playDialogue(key)

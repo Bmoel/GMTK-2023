@@ -109,6 +109,7 @@ func queue_text(next_text, top_box_opt="", color_opt=""):
 		$TopBox.hide()
 	#pushes text onto queue
 	text_queue.push_back(next_text)
+	print(_topBox.bbcode_text)
 
 """
 /*
@@ -119,6 +120,7 @@ func queue_text(next_text, top_box_opt="", color_opt=""):
 */
 """
 func set_top_box_text(text_in, color_in):
+	print("got " + color_in)
 	var color_code = Global.getColorCode(color_in)
 	var mod_text = "[color=" + color_code + "]" + text_in +  "[/color]"
 	_topBox.bbcode_text = mod_text
