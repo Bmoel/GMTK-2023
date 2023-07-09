@@ -5,6 +5,8 @@ var masterVol:int = 0
 var musicVol:int = 0
 var sfxVol:int = 0
 
+var player_name = ""
+
 const COLORS:Dictionary = {
 	"blue": "#2245d4",
 	"red": "#c72820",
@@ -15,8 +17,14 @@ const COLORS:Dictionary = {
 	"black": "#000000"
 }
 
-func getColorCode(color:String):
+func getColorCode(color:String) -> String:
 	var code = COLORS.get(color.to_lower())
 	if code == null:
 		return COLORS.get("white")
 	return code
+
+func setPlayerName(value: String) -> void:
+	player_name = value.strip_edges()
+
+func getPlayerName() -> String:
+	return player_name

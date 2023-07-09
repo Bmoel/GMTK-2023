@@ -19,6 +19,7 @@ func _ready():
 
 func _on_Start_pressed():
 	bg_music.stop()
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/Executive/Executive.tscn")
 
 func _on_Options_pressed():

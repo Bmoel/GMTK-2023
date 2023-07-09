@@ -1,21 +1,23 @@
 extends Control
 
 onready var _buttons = $ButtonLayer/DecisionButtons
+onready var decisionButtons = $ButtonLayer/DecisionButtons
 
 var _characters = []
 var _currentCharID:int
 var _pendingDialogueKey:String
-onready var decisionButtons = $ButtonLayer/DecisionButtons
+var _opening_scene = preload("res://Scenes/openingScene/openingScene.tscn")
+
 onready var blink = $Blink/AnimationPlayer
 onready var canvasVis = $Blink
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# warning-ignore:return_value_discarded
 	decisionButtons.connect("recenter_buttons", self, "_recenter_buttons")
 	initializeCharacters()
-	playBlink()
-	playGame()
+	openSequence()
 
 """
 /*
@@ -48,7 +50,7 @@ func initializeCharacters():
 */
 """		
 func playGame():
-	openSequence()
+	playBlink()
 	_currentCharID = 0
 	for id in range(0, len(_characters)):
 		slideCharacter("left", id)
@@ -63,7 +65,11 @@ func playGame():
 */
 """		
 func openSequence():
-	pass
+	_buttons.hide()
+	var op_scene:Popup = _opening_scene.instance()
+	$ButtonLayer.add_child(op_scene)
+	op_scene.connect("openingDone", self, "playGame")
+	op_scene.popup_centered()
 
 """
 /*

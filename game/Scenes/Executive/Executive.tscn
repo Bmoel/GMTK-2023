@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Scenes/Executive/Executive.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Executive/DecisionButtons.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Font/Silver.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Scenes/textBox/textBox.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/ButtonStyle.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Assets/Background.png" type="Texture" id=6]
 
 [sub_resource type="Environment" id=13]
 background_mode = 4
@@ -222,6 +223,10 @@ script = ExtResource( 1 )
 environment = SubResource( 13 )
 
 [node name="ButtonLayer" type="CanvasLayer" parent="."]
+
+[node name="background" type="Sprite" parent="ButtonLayer"]
+position = Vector2( 960, 544 )
+texture = ExtResource( 6 )
 
 [node name="DecisionButtons" type="VBoxContainer" parent="ButtonLayer"]
 anchor_left = 0.5
