@@ -35,7 +35,7 @@ func _process(delta):
 		bg_music.volume_db += 30*delta
 		if bg_music.volume_db >= -10:
 			fade_in = false
-	if d_is_speak:
+	if _current_char_speaking == "dolores":
 		if dpos.self_modulate.a < 1:
 			dpos.self_modulate.a += .75*delta
 			dpos.scale.x += .05*delta
@@ -45,7 +45,7 @@ func _process(delta):
 			dpos.self_modulate.a -= .75*delta
 			dpos.scale.x -= .05*delta
 			dpos.scale.y -= .05*delta
-	if f_is_speak:
+	if _current_char_speaking == "fred":
 		if fpos.self_modulate.a < 1:
 			fpos.self_modulate.a += .75*delta
 			fpos.scale.x += .05*delta
@@ -316,23 +316,18 @@ func _mouse_button_entered():
 func _button_down():
 	$button_down.play()
 
-func _dolores_speak(check):
-	d_is_speak = check
-	if check:
-		dpos.play()
-		
-	else:
-		dpos.stop()
-		dpos.frame = 0
-
-func _fred_speak(check):
-	f_is_speak = check
-	if check:
-		fpos.play()
-	else:
-		fpos.stop()
-		fpos.frame = 0
 
 func _currentSpeaker(current: String):
 	if current == "dolores" || current == "fred":
 		_current_char_speaking = current
+		if _current_char_speaking == "dolores":
+			dpos.play()
+		else:
+			dpos.stop()
+			dpos.frame = 0
+
+		if _current_char_speaking == "fred":
+			fpos.play()
+		else:
+			fpos.stop()
+			fpos.frame = 0
